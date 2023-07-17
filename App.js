@@ -1,30 +1,22 @@
 import React, { useState } from "react";
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, SafeAreaView, FlatList } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import "react-native-gesture-handler";
 import { useFonts } from "expo-font";
 
-const COURSES = [
-  {
-    id: "45k6-j54k-4jth",
-    title: "HTML",
-  },
-  {
-    id: "4116-jfk5-43rh",
-    title: "JavaScript",
-  },
-  {
-    id: "4d16-5tt5-4j55",
-    title: "React",
-  },
-  {
-    id: "LG16-ant5-0J25",
-    title: "React Native",
-  },
-];
+// import { StatusBar } from "expo-status-bar";
+
+import RegistrationScreen from "./Screens/RegistrationScreen";
+import LoginScreen from "./Screens/LoginScreen";
+import PostsScreen from "./Screens/PostsScreen";
+import CreatePostScreen from "./Screens/CreatePostScreen";
+import FeedScreen from "./Screens/FeedScreen";
+import ProfileScreen from "./Screens/ProfileScreen";
+import CommentsScreen from "./Screens/CommentsScreen";
+
+const Stack = createStackNavigator();
 
 export default function App() {
-  const [courses, setCourses] = useState(COURSES);
-
   const [fontsLoaded] = useFonts({
     JosefinSansItalic: require("./assets/fonts/Josefin_Sans/JosefinSans-Italic-VariableFont_wght.ttf"),
     JosefinSans: require("./assets/fonts/Josefin_Sans/JosefinSans-VariableFont_wght.ttf"),
@@ -35,30 +27,45 @@ export default function App() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <FlatList
-        data={courses}
-        renderItem={({ item }) => <Text>{item.title}</Text>}
-        keyExtractor={(item) => item.id}
-      />
-      <Text style={styles.title}>
-        Whereas disregard and contempt for human rights have resulted
-      </Text>
-      <StatusBar style="auto" />
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Registration">
+        <Stack.Screen
+          name="Registration"
+          component={RegistrationScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Posts"
+          component={PostsScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="CreatePost"
+          component={CreatePostScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Feed"
+          component={FeedScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={ProfileScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Comments"
+          component={CommentsScreen}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+      {/* <StatusBar style="auto" /> */}
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "teal",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    color: "white",
-    fontSize: 44,
-    fontFamily: "JosefinSansItalic",
-  },
-});
