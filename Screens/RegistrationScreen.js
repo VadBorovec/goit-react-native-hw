@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  ScrollView,
   View,
   Text,
   ImageBackground,
@@ -18,7 +17,6 @@ import Background from "../assets/images/background.jpg";
 import AvatarPlaceholder from "../assets/images/avatar-large.jpg";
 import { Formik } from "formik";
 import * as Yup from "yup";
-// import { ScrollView } from "react-native-gesture-handler";
 
 export default function RegistrationScreen() {
   const [isAvatarAdded, setIsAvatarAdded] = useState(false);
