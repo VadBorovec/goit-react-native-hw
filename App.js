@@ -45,13 +45,13 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="CreatePost"
-          component={CreatePostScreen}
+          name="Profile"
+          component={ProfileScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Profile"
-          component={ProfileScreen}
+          name="CreatePost"
+          component={CreatePostScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen

@@ -2,19 +2,44 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
+//Temporary markup
 export default function PostsScreen() {
   const navigation = useNavigation();
 
-  const handleRegister = () => {
-    // Perform registration logic here
-    // Once registration is successful, navigate to FeedScreen
-    navigation.navigate("Registration");
-  };
   return (
-    <TouchableOpacity style={styles.container} onPress={handleRegister}>
-      <Text style={styles.heading}>Feed Screen</Text>
-      {/* Add your  Feed Screen UI and functionality here */}
-    </TouchableOpacity>
+    <View style={styles.container}>
+      <Text style={styles.heading}>Posts Screen</Text>
+      <TouchableOpacity
+        style={styles.text}
+        onPress={() => navigation.navigate("Registration")}
+      >
+        <Text style={styles.text}>to Registration Screen</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.text}
+        onPress={() => navigation.navigate("Login")}
+      >
+        <Text style={styles.text}>to Login Screen</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.text}
+        onPress={() => navigation.navigate("Profile")}
+      >
+        <Text style={styles.text}>to Profile Screen</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.text}
+        onPress={() => navigation.navigate("CreatePost")}
+      >
+        <Text style={styles.text}>to Create Post Screen</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.text}
+        onPress={() => navigation.navigate("Comments")}
+      >
+        <Text style={styles.text}>to Comments Screen</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
@@ -23,11 +48,17 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: "cover",
     justifyContent: "center",
+    alignItems: "center",
     backgroundColor: "yellow",
   },
   heading: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 700,
     marginBottom: 20,
+  },
+  text: {
+    fontSize: 18,
+    fontWeight: 400,
+    marginBottom: 10,
   },
 });
