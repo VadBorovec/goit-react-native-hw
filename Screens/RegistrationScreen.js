@@ -12,46 +12,41 @@ import {
   TouchableWithoutFeedback,
   StyleSheet,
 } from "react-native";
+import { Feather } from "@expo/vector-icons";
 import Background from "../assets/images/background.jpg";
 import AvatarPlaceholder from "../assets/images/avatar-large.jpg";
 
 export default function RegistrationScreen() {
+  const [isAvatarAdded, setIsAvatarAdded] = useState(false);
+
   const [isLoginFocused, setIsLoginFocused] = useState(false);
+
   const [isEmailFocused, setIsEmailFocused] = useState(false);
+
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
-
-  const handleEmailFocus = () => {
-    setIsEmailFocused(true);
-  };
-
-  const handleEmailBlur = () => {
-    setIsEmailFocused(false);
-  };
-
-  const handlePasswordFocus = () => {
-    setIsPasswordFocused(true);
-  };
-
-  const handlePasswordBlur = () => {
-    setIsPasswordFocused(false);
-  };
+  const [isPasswordHidden, setIsPasswordHiddn] = useState(true);
 
   return (
-    <KeyboardAvoidingView
-      style={styles.block}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ImageBackground style={styles.background} source={Background}>
-          {/* <ScrollView> */}
-          <View style={styles.container}>
-            <View style={styles.avatarContainer}>
-              <Image style={styles.avatar} source={AvatarPlaceholder} />
-              <TouchableOpacity style={styles.addAvatarButton}>
-                <Text style={styles.addAvatarButtonText}>+</Text>
-              </TouchableOpacity>
-            </View>
-            <Text style={styles.heading}>Registration</Text>
+    // <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <ImageBackground style={styles.background} source={Background}>
+        <View style={styles.form}>
+          <View style={styles.avatarContainer}>
+            <Image style={styles.avatar} source={AvatarPlaceholder} />
+            <TouchableOpacity
+              style={styles.addAvatarButton}
+              onPress={() => setIsAvatarAdded(!isAvatarAdded)}
+            >
+              {isAvatarAdded ? (
+                <Feather name="x-circle" size={24} color="#BDBDBD" />
+              ) : (
+                <Feather name="plus-circle" size={24} color="#FF6C00" />
+              )}
+            </TouchableOpacity>
+          </View>
+
+          <Text style={styles.header}>Registration</Text>
+          <View style={styles.inputWrap}>
             <TextInput
               style={[styles.input, isLoginFocused && styles.inputFocused]}
               placeholder="Login"
@@ -64,50 +59,65 @@ export default function RegistrationScreen() {
               onFocus={() => setIsEmailFocused(true)}
               onBlur={() => setIsEmailFocused(false)}
             />
-            <View style={styles.passwordInputContainer}>
-              <TextInput
-                style={[
-                  styles.input,
-                  styles.passwordInput,
-                  isPasswordFocused && styles.inputFocused,
-                ]}
-                placeholder="Password"
-                secureTextEntry={true}
-                onFocus={() => setIsPasswordFocused(true)}
-                onBlur={() => setIsPasswordFocused(false)}
-              />
-              <Text style={styles.showPasswordText}>Show</Text>
-            </View>
-            <TouchableOpacity style={styles.registerButton}>
-              <Text style={styles.registerButtonText}>Register</Text>
+            <TextInput
+              style={[styles.input, isPasswordFocused && styles.inputFocused]}
+              placeholder="Password"
+              secureTextEntry={isPasswordHidden}
+              onFocus={() => setIsPasswordFocused(true)}
+              onBlur={() => setIsPasswordFocused(false)}
+            />
+            <TouchableOpacity
+              style={styles.showPassword}
+              onPress={() => setIsPasswordHiddn(!isPasswordHidden)}
+            >
+              {isPasswordHidden ? (
+                <Feather
+                  name="eye-off"
+                  size={24}
+                  color="#1B4371"
+                  style={styles.showPassword}
+                />
+              ) : (
+                <Feather
+                  name="eye"
+                  size={24}
+                  color="#FF6C00"
+                  style={styles.showPassword}
+                />
+              )}
             </TouchableOpacity>
-            <View style={styles.signInContainer}>
-              <Text style={styles.signInText}>Already have an account?</Text>
-              <TouchableOpacity>
-                <Text style={styles.signInLink}>Login</Text>
-              </TouchableOpacity>
-            </View>
           </View>
-          {/* </ScrollView> */}
-        </ImageBackground>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+          <TouchableOpacity style={styles.registerButton}>
+            <Text style={styles.registerButtonText}>Register</Text>
+          </TouchableOpacity>
+          <View style={styles.logInWrap}>
+            <Text style={styles.logInText}>Already have an account?</Text>
+            <TouchableOpacity>
+              <Text style={styles.logInLink}>Login</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ImageBackground>
+    </TouchableWithoutFeedback>
+    // </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  block: {
+  container: {
     flex: 1,
   },
   background: {
     flex: 1,
     resizeMode: "cover",
     justifyContent: "flex-end",
+    flexShrink: 0,
   },
-  container: {
-    height: "67%",
-    backgroundColor: "#FFFFFF",
+  form: {
+    height: 549,
+    flexShrink: 0,
     alignItems: "center",
+    backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     paddingVertical: 92,
@@ -115,10 +125,11 @@ const styles = StyleSheet.create({
   },
   avatarContainer: {
     position: "absolute",
+    top: -60,
     width: 120,
     height: 120,
+    flexShrink: 0,
     borderRadius: 16,
-    top: -60,
     backgroundColor: "#F6F6F6",
   },
   avatar: {
@@ -130,79 +141,88 @@ const styles = StyleSheet.create({
     height: 24,
     bottom: 14,
     right: -12,
-    backgroundColor: "#ffffff",
     borderRadius: "50%",
-    borderWidth: 1,
-    borderColor: "#FF6C00",
     alignItems: "center",
     justifyContent: "center",
   },
-  addAvatarButtonText: {
-    color: "#FF6C00",
-    fontSize: 14,
-  },
-  heading: {
+  header: {
+    color: "#212121",
+    textAlign: "center",
+    fontFamily: "Roboto",
     fontSize: 30,
+    fontStyle: "normal",
     fontWeight: 500,
-    lineHeight: 35.16,
+    lineHeight: "normal",
+    letterSpacing: 0.3,
     marginBottom: 33,
   },
-  input: {
+  inputWrap: {
     width: "100%",
+    maxWidth: 343,
+    marginBottom: 27,
+  },
+  input: {
+    maxWidth: 343,
     height: 50,
-    color: "#212121",
+    flexShrink: 0,
+    color: "#BDBDBD",
     backgroundColor: "#F6F6F6",
     borderColor: "#E8E8E8",
-    borderRadius: "50%",
     borderWidth: 1,
     borderRadius: 8,
     marginBottom: 16,
     paddingHorizontal: 16,
   },
   inputFocused: {
+    color: "#212121",
     backgroundColor: "#FFFFFF",
     borderColor: "#FF6C00",
   },
-  passwordInputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 43,
-  },
-  showPasswordText: {
+  showPassword: {
     position: "absolute",
-    right: 16,
-    bottom: 30,
+    right: 14,
+    bottom: 14,
     color: "#1B4371",
   },
   registerButton: {
-    backgroundColor: "#FF6C00",
-    borderRadius: "50%",
-    width: "80%",
+    width: "100%",
+    maxWidth: 343,
     height: 51,
     alignItems: "center",
     justifyContent: "center",
+    paddingVertical: 16,
+    paddingHorizontal: 32,
     marginBottom: 16,
+    borderRadius: 100,
+    backgroundColor: "#FF6C00",
   },
   registerButtonText: {
-    color: "#ffffff",
+    color: "#FFFFFF",
+    fontFamily: "Roboto",
     fontSize: 16,
+    fontStyle: "normal",
     fontWeight: 400,
-    lineHeight: 18.75,
+    lineHeight: "normal",
   },
-  signInContainer: {
+  logInWrap: {
     flexDirection: "row",
   },
-  signInText: {
+  logInText: {
     color: "#1B4371",
+    fontFamily: "Roboto",
     fontSize: 16,
+    fontStyle: "normal",
     fontWeight: 400,
-    lineHeight: 18.75,
+    lineHeight: "normal",
   },
-  signInLink: {
-    marginLeft: 8,
+  logInLink: {
     color: "#1B4371",
+    fontFamily: "Roboto",
     fontSize: 16,
+    fontStyle: "normal",
     fontWeight: 400,
-    lineHeight: 18.75,
+    lineHeight: "normal",
+    marginLeft: 8,
+    textDecorationLine: "underline",
   },
 });
