@@ -1,12 +1,20 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 export default function PostsScreen() {
+  const navigation = useNavigation();
+
+  const handleRegister = () => {
+    // Perform registration logic here
+    // Once registration is successful, navigate to FeedScreen
+    navigation.navigate("Registration");
+  };
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Posts Screen</Text>
-      {/* Add your  Posts Screen UI and functionality here */}
-    </View>
+    <TouchableOpacity style={styles.container} onPress={handleRegister}>
+      <Text style={styles.heading}>Feed Screen</Text>
+      {/* Add your  Feed Screen UI and functionality here */}
+    </TouchableOpacity>
   );
 }
 
@@ -15,7 +23,7 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: "cover",
     justifyContent: "center",
-    backgroundColor: "white",
+    backgroundColor: "yellow",
   },
   heading: {
     fontSize: 24,

@@ -33,7 +33,7 @@ export default function RegistrationScreen() {
 
   const onSignup = () => {
     console.log("You tapped the button!");
-    navigation.navigate("Feed");
+    navigation.navigate("Posts");
     setLogin("");
     setEmail("");
     setPassword("");
@@ -112,7 +112,7 @@ export default function RegistrationScreen() {
             <TouchableOpacity
               title="Signup"
               style={styles.registerButton}
-              onPress={() => navigation.navigate("Feed")}
+              onPress={onSignup}
             >
               <Text style={styles.registerButtonText}>Sign up</Text>
             </TouchableOpacity>

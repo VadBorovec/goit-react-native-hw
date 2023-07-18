@@ -27,7 +27,7 @@ export default function LoginScreenScreen() {
 
   const onLogin = () => {
     console.log("You tapped the button!");
-    navigation.navigate("Feed");
+    navigation.navigate("Posts");
     setEmail("");
     setPassword("");
   };
@@ -84,7 +84,7 @@ export default function LoginScreenScreen() {
             <TouchableOpacity
               title="Signup"
               style={styles.loginButton}
-              onPress={() => navigation.navigate("Feed")}
+              onPress={onLogin}
             >
               <Text style={styles.loginButtonText}>Login</Text>
             </TouchableOpacity>

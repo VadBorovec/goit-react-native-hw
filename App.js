@@ -10,7 +10,6 @@ import RegistrationScreen from "./Screens/RegistrationScreen";
 import LoginScreen from "./Screens/LoginScreen";
 import PostsScreen from "./Screens/PostsScreen";
 import CreatePostScreen from "./Screens/CreatePostScreen";
-import FeedScreen from "./Screens/FeedScreen";
 import ProfileScreen from "./Screens/ProfileScreen";
 import CommentsScreen from "./Screens/CommentsScreen";
 
@@ -48,11 +47,6 @@ export default function App() {
         <Stack.Screen
           name="CreatePost"
           component={CreatePostScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Feed"
-          component={FeedScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
