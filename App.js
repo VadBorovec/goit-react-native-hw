@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import "react-native-gesture-handler";
 import { useFonts } from "expo-font";
 
-// import { StatusBar } from "expo-status-bar";
+import { StatusBar } from "expo-status-bar";
 
 import RegistrationScreen from "./Screens/RegistrationScreen";
 import LoginScreen from "./Screens/LoginScreen";
@@ -18,8 +18,9 @@ const Stack = createStackNavigator();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    JosefinSansItalic: require("./assets/fonts/Josefin_Sans/JosefinSans-Italic-VariableFont_wght.ttf"),
-    JosefinSans: require("./assets/fonts/Josefin_Sans/JosefinSans-VariableFont_wght.ttf"),
+    JosefinSansThin: require("./assets/fonts/Josefin_Sans/static/JosefinSans-Thin.ttf"),
+    JosefinSansRegular: require("./assets/fonts/Josefin_Sans/static/JosefinSans-Regular.ttf"),
+    JosefinSansBold: require("./assets/fonts/Josefin_Sans/static/JosefinSans-Bold.ttf"),
   });
 
   if (!fontsLoaded) {
@@ -65,7 +66,7 @@ export default function App() {
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
-      {/* <StatusBar style="auto" /> */}
+      <StatusBar style="auto" />
     </NavigationContainer>
   );
 }
