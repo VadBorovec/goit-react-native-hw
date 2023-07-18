@@ -14,14 +14,8 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import Background from "../assets/images/background.jpg";
-import AvatarPlaceholder from "../assets/images/avatar-large.jpg";
 
-export default function LoginScreen() {
-  const [isAvatarAdded, setIsAvatarAdded] = useState(false);
-
-  const [login, setLogin] = useState("");
-  const [isLoginFocused, setIsLoginFocused] = useState(false);
-
+export default function LoginScreenScreen() {
   const [email, setEmail] = useState("");
   const [isEmailFocused, setIsEmailFocused] = useState(false);
 
@@ -31,52 +25,37 @@ export default function LoginScreen() {
 
   const navigation = useNavigation();
 
+  const onLogin = () => {
+    console.log("You tapped the button!");
+    navigation.navigate("Feed");
+    setEmail("");
+    setPassword("");
+  };
+
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
         <ImageBackground style={styles.background} source={Background}>
           <View style={styles.form}>
-            <View style={styles.avatarContainer}>
-              <Image style={styles.avatar} source={AvatarPlaceholder} />
-              <TouchableOpacity
-                style={styles.addAvatarButton}
-                onPress={() => setIsAvatarAdded(!isAvatarAdded)}
-              >
-                {isAvatarAdded ? (
-                  <Feather name="x-circle" size={24} color="#BDBDBD" />
-                ) : (
-                  <Feather name="plus-circle" size={24} color="#FF6C00" />
-                )}
-              </TouchableOpacity>
-            </View>
-
-            <Text style={styles.header}>Registration</Text>
+            <Text style={styles.header}>Login</Text>
             <View style={styles.inputWrap}>
               <TextInput
-                style={[styles.input, isLoginFocused && styles.inputFocused]}
-                placeholder="Login"
-                value={login}
-                onChangeText={setLogin}
-                onFocus={() => setIsLoginFocused(true)}
-                onBlur={() => setIsLoginFocused(false)}
-              />
-              <TextInput
                 style={[styles.input, isEmailFocused && styles.inputFocused]}
-                placeholder="E-mail"
                 value={email}
                 onChangeText={setEmail}
+                placeholder="E-mail"
                 keyboardType="email-address"
                 onFocus={() => setIsEmailFocused(true)}
                 onBlur={() => setIsEmailFocused(false)}
               />
               <TextInput
                 style={[styles.input, isPasswordFocused && styles.inputFocused]}
-                placeholder="Password"
                 value={password}
                 onChangeText={setPassword}
+                placeholder="Password"
                 secureTextEntry={isPasswordHidden}
                 onFocus={() => setIsPasswordFocused(true)}
                 onBlur={() => setIsPasswordFocused(false)}
@@ -103,23 +82,25 @@ export default function LoginScreen() {
               </TouchableOpacity>
             </View>
             <TouchableOpacity
-              style={styles.registerButton}
-              onPress={handleRegister}
+              title="Signup"
+              style={styles.loginButton}
+              onPress={() => navigation.navigate("Feed")}
             >
-              <Text style={styles.registerButtonText}>Register</Text>
+              <Text style={styles.loginButtonText}>Login</Text>
             </TouchableOpacity>
+
             <View style={styles.logInWrap}>
-              <Text style={styles.logInText}>Already have an account?</Text>
+              <Text style={styles.logInText}>Don't have an account?</Text>
               <TouchableOpacity
                 onPress={() => navigation.navigate("Registration")}
               >
-                <Text style={styles.logInLink}>Login</Text>
+                <Text style={styles.logInLink}>Sign up</Text>
               </TouchableOpacity>
             </View>
           </View>
         </ImageBackground>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -134,42 +115,19 @@ const styles = StyleSheet.create({
     flexShrink: 0,
   },
   form: {
-    height: 549,
+    height: "59%",
     flexShrink: 0,
     alignItems: "center",
     backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    paddingVertical: 92,
+    paddingVertical: 32,
     paddingHorizontal: 16,
-  },
-  avatarContainer: {
-    position: "absolute",
-    top: -60,
-    width: 120,
-    height: 120,
-    flexShrink: 0,
-    borderRadius: 16,
-    backgroundColor: "#F6F6F6",
-  },
-  avatar: {
-    borderRadius: 16,
-  },
-  addAvatarButton: {
-    position: "absolute",
-    width: 24,
-    height: 24,
-    bottom: 14,
-    right: -12,
-    borderRadius: "50%",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#FFFFFF",
   },
   header: {
     color: "#212121",
     textAlign: "center",
-    // fontFamily: "Roboto",
+    fontFamily: "JosefinSansBold",
     fontSize: 30,
     fontStyle: "normal",
     fontWeight: 500,
@@ -205,7 +163,7 @@ const styles = StyleSheet.create({
     bottom: 14,
     color: "#1B4371",
   },
-  registerButton: {
+  loginButton: {
     width: "100%",
     maxWidth: 343,
     height: 51,
@@ -217,9 +175,9 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     backgroundColor: "#FF6C00",
   },
-  registerButtonText: {
+  loginButtonText: {
     color: "#FFFFFF",
-    // fontFamily: "Roboto",
+    fontFamily: "JosefinSansBold",
     fontSize: 16,
     fontStyle: "normal",
     fontWeight: 400,
@@ -230,7 +188,6 @@ const styles = StyleSheet.create({
   },
   logInText: {
     color: "#1B4371",
-    // fontFamily: "Roboto",
     fontSize: 16,
     fontStyle: "normal",
     fontWeight: 400,
@@ -238,7 +195,6 @@ const styles = StyleSheet.create({
   },
   logInLink: {
     color: "#1B4371",
-    // fontFamily: "Roboto",
     fontSize: 16,
     fontStyle: "normal",
     fontWeight: 400,

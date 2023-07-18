@@ -60,7 +60,7 @@ export default function RegistrationScreen() {
                 )}
               </TouchableOpacity>
             </View>
-            <Text style={styles.header}>Registration</Text>
+            <Text style={styles.header}>Sign p</Text>
             <View style={styles.inputWrap}>
               <TextInput
                 style={[styles.input, isLoginFocused && styles.inputFocused]}
@@ -114,7 +114,7 @@ export default function RegistrationScreen() {
               style={styles.registerButton}
               onPress={() => navigation.navigate("Feed")}
             >
-              <Text style={styles.registerButtonText}>Register</Text>
+              <Text style={styles.registerButtonText}>Sign up</Text>
             </TouchableOpacity>
 
             <View style={styles.logInWrap}>
