@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  ScrollView,
   View,
   Text,
   ImageBackground,
@@ -15,28 +16,49 @@ import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import Background from "../assets/images/background.jpg";
 import AvatarPlaceholder from "../assets/images/avatar-large.jpg";
+import { Formik } from "formik";
+import * as Yup from "yup";
+// import { ScrollView } from "react-native-gesture-handler";
 
 export default function RegistrationScreen() {
   const [isAvatarAdded, setIsAvatarAdded] = useState(false);
 
-  const [login, setLogin] = useState("");
   const [isLoginFocused, setIsLoginFocused] = useState(false);
-
-  const [email, setEmail] = useState("");
   const [isEmailFocused, setIsEmailFocused] = useState(false);
-
-  const [password, setPassword] = useState("");
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordHidden, setIsPasswordHiddn] = useState(true);
 
   const navigation = useNavigation();
 
-  const onSignup = () => {
-    console.log("You tapped the button!");
+  const initialValues = {
+    login: "",
+    email: "",
+    password: "",
+  };
+
+  const validationSchema = Yup.object().shape({
+    login: Yup.string()
+      .required("Login is required")
+      .min(3, "Login must be at least 3 characters")
+      .max(20, "Login must be at most 20 characters")
+      .matches(/^\S*$/, "Login cannot contain spaces"),
+    email: Yup.string()
+      .required("Email is required")
+      .email("Invalid email address"),
+    password: Yup.string()
+      .required("Password is required")
+      .min(3, "Password must be at least 3 characters")
+      .max(20, "Password must be at most 20 characters")
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{3,}$/,
+        "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+      ),
+  });
+
+  const handleSignup = (values, { resetForm }) => {
+    console.log(values);
     navigation.navigate("Posts");
-    setLogin("");
-    setEmail("");
-    setPassword("");
+    resetForm();
   };
 
   return (
@@ -60,62 +82,103 @@ export default function RegistrationScreen() {
                 )}
               </TouchableOpacity>
             </View>
-            <Text style={styles.header}>Sign p</Text>
-            <View style={styles.inputWrap}>
-              <TextInput
-                style={[styles.input, isLoginFocused && styles.inputFocused]}
-                value={login}
-                onChangeText={setLogin}
-                placeholder="Login"
-                onFocus={() => setIsLoginFocused(true)}
-                onBlur={() => setIsLoginFocused(false)}
-              />
-              <TextInput
-                style={[styles.input, isEmailFocused && styles.inputFocused]}
-                value={email}
-                onChangeText={setEmail}
-                placeholder="E-mail"
-                keyboardType="email-address"
-                onFocus={() => setIsEmailFocused(true)}
-                onBlur={() => setIsEmailFocused(false)}
-              />
-              <TextInput
-                style={[styles.input, isPasswordFocused && styles.inputFocused]}
-                value={password}
-                onChangeText={setPassword}
-                placeholder="Password"
-                secureTextEntry={isPasswordHidden}
-                onFocus={() => setIsPasswordFocused(true)}
-                onBlur={() => setIsPasswordFocused(false)}
-              />
-              <TouchableOpacity
-                style={styles.showPassword}
-                onPress={() => setIsPasswordHiddn(!isPasswordHidden)}
+            <Text style={styles.header}>Sign up</Text>
+            <View style={styles.formikWrap}>
+              <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={handleSignup}
               >
-                {isPasswordHidden ? (
-                  <Feather
-                    name="eye-off"
-                    size={24}
-                    color="#1B4371"
-                    style={styles.showPassword}
-                  />
-                ) : (
-                  <Feather
-                    name="eye"
-                    size={24}
-                    color="#FF6C00"
-                    style={styles.showPassword}
-                  />
+                {({ handleChange, handleSubmit, values, errors, touched }) => (
+                  <View>
+                    <View style={styles.inputWrap}>
+                      <TextInput
+                        style={[
+                          styles.input,
+                          isLoginFocused && styles.inputFocused,
+                          errors.login && touched.login && styles.inputError,
+                        ]}
+                        value={values.login}
+                        onChangeText={handleChange("login")}
+                        placeholder="Login"
+                        onFocus={() => setIsLoginFocused(true)}
+                        onBlur={() => setIsLoginFocused(false)}
+                      />
+                      {errors.login && touched.login && (
+                        <Text style={styles.errorText}>{errors.login}</Text>
+                      )}
+                    </View>
+                    <View style={styles.inputWrap}>
+                      <TextInput
+                        style={[
+                          styles.input,
+                          isEmailFocused && styles.inputFocused,
+                          errors.email && touched.email && styles.inputError,
+                        ]}
+                        value={values.email}
+                        onChangeText={handleChange("email")}
+                        placeholder="E-mail"
+                        keyboardType="email-address"
+                        onFocus={() => setIsEmailFocused(true)}
+                        onBlur={() => setIsEmailFocused(false)}
+                      />
+                      {errors.email && touched.email && (
+                        <Text style={styles.errorText}>{errors.email}</Text>
+                      )}
+                    </View>
+                    <View style={styles.inputWrapLast}>
+                      <View style={styles.inputPaswordWrap}>
+                        <TextInput
+                          style={[
+                            styles.input,
+                            isPasswordFocused && styles.inputFocused,
+                            errors.password &&
+                              touched.password &&
+                              styles.inputError,
+                          ]}
+                          value={values.password}
+                          onChangeText={handleChange("password")}
+                          placeholder="Password"
+                          secureTextEntry={isPasswordHidden}
+                          onFocus={() => setIsPasswordFocused(true)}
+                          onBlur={() => setIsPasswordFocused(false)}
+                        />
+                        <TouchableOpacity
+                          style={styles.showPassword}
+                          onPress={() => setIsPasswordHiddn(!isPasswordHidden)}
+                        >
+                          {isPasswordHidden ? (
+                            <Feather
+                              name="eye-off"
+                              size={24}
+                              color="#1B4371"
+                              style={styles.showPassword}
+                            />
+                          ) : (
+                            <Feather
+                              name="eye"
+                              size={24}
+                              color="#FF6C00"
+                              style={styles.showPassword}
+                            />
+                          )}
+                        </TouchableOpacity>
+                      </View>
+                      {errors.password && touched.password && (
+                        <Text style={styles.errorText}>{errors.password}</Text>
+                      )}
+                    </View>
+                    <TouchableOpacity
+                      title="Signup"
+                      style={styles.registerButton}
+                      onPress={handleSubmit}
+                    >
+                      <Text style={styles.registerButtonText}>Sign up</Text>
+                    </TouchableOpacity>
+                  </View>
                 )}
-              </TouchableOpacity>
+              </Formik>
             </View>
-            <TouchableOpacity
-              title="Signup"
-              style={styles.registerButton}
-              onPress={onSignup}
-            >
-              <Text style={styles.registerButtonText}>Sign up</Text>
-            </TouchableOpacity>
 
             <View style={styles.logInWrap}>
               <Text style={styles.logInText}>Already have an account?</Text>
@@ -141,13 +204,14 @@ const styles = StyleSheet.create({
     flexShrink: 0,
   },
   form: {
+    // height: 549,
     height: "67%",
     flexShrink: 0,
     alignItems: "center",
     backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    paddingVertical: 92,
+    paddingTop: 92,
     paddingHorizontal: 16,
   },
   avatarContainer: {
@@ -184,13 +248,18 @@ const styles = StyleSheet.create({
     letterSpacing: 0.3,
     marginBottom: 33,
   },
-  inputWrap: {
+  formikWrap: {
     width: "100%",
     maxWidth: 343,
-    marginBottom: 27,
+    marginBottom: 32,
+  },
+  inputWrap: {
+    marginBottom: 16,
+  },
+  inputWrapLast: {
+    marginBottom: 43,
   },
   input: {
-    maxWidth: 343,
     height: 50,
     flexShrink: 0,
     color: "#BDBDBD",
@@ -198,7 +267,6 @@ const styles = StyleSheet.create({
     borderColor: "#E8E8E8",
     borderWidth: 1,
     borderRadius: 8,
-    marginBottom: 16,
     paddingHorizontal: 16,
   },
   inputFocused: {
@@ -206,21 +274,30 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     borderColor: "#FF6C00",
   },
+  inputError: {
+    borderColor: "#FF0000",
+  },
+  errorText: {
+    color: "#FF0000",
+    fontSize: 12,
+    marginTop: 4,
+    marginLeft: 12,
+  },
+  inputPaswordWrap: {
+    position: "relative",
+  },
   showPassword: {
     position: "absolute",
-    right: 14,
-    bottom: 14,
+    right: 12,
+    bottom: 6,
     color: "#1B4371",
   },
   registerButton: {
-    width: "100%",
-    maxWidth: 343,
     height: 51,
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 16,
     paddingHorizontal: 32,
-    marginBottom: 16,
     borderRadius: 100,
     backgroundColor: "#FF6C00",
   },
@@ -234,6 +311,7 @@ const styles = StyleSheet.create({
   },
   logInWrap: {
     flexDirection: "row",
+    paddingBottom: 45,
   },
   logInText: {
     color: "#1B4371",
