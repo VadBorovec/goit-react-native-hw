@@ -57,7 +57,7 @@ export default function LoginScreenScreen() {
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? -190 : -180}
+        keyboardVerticalOffset={Platform.OS === "ios" ? -240 : -230}
       >
         <ImageBackground style={styles.background} source={Background}>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -184,7 +184,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   form: {
-    // flexShrink: 0,
     alignItems: "center",
     backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 25,
@@ -251,7 +250,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 32,
-    marginBottom: 16,
     borderRadius: 100,
     backgroundColor: "#FF6C00",
   },
@@ -264,7 +262,7 @@ const styles = StyleSheet.create({
   },
   logInWrap: {
     flexDirection: "row",
-    paddingBottom: 45,
+    paddingBottom: 132,
   },
   logInText: {
     color: "#1B4371",
