@@ -26,7 +26,7 @@ export default function RegistrationScreen() {
   const [isLoginFocused, setIsLoginFocused] = useState(false);
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
-  const [isPasswordHidden, setIsPasswordHiddn] = useState(true);
+  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
   const navigation = useNavigation();
 
@@ -59,6 +59,7 @@ export default function RegistrationScreen() {
     console.log(values);
     navigation.navigate("Posts");
     resetForm();
+    setIsPasswordHidden(true);
   };
 
   return (
@@ -66,7 +67,7 @@ export default function RegistrationScreen() {
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -220}
+        keyboardVerticalOffset={Platform.OS === "ios" ? -190 : -180}
       >
         <ImageBackground style={styles.background} source={Background}>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -154,7 +155,7 @@ export default function RegistrationScreen() {
                           <TouchableOpacity
                             style={styles.showPassword}
                             onPress={() =>
-                              setIsPasswordHiddn(!isPasswordHidden)
+                              setIsPasswordHidden(!isPasswordHidden)
                             }
                           >
                             {isPasswordHidden ? (
@@ -221,9 +222,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   form: {
-    // height: 549,
-    // height: "67%",
-    flexGrow: 0.17,
     alignItems: "center",
     backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 25,

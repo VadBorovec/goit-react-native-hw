@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  ScrollView,
   View,
   Text,
   ImageBackground,
@@ -10,10 +11,13 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   StyleSheet,
+  Platform,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import Background from "../assets/images/background.jpg";
+import { Formik } from "formik";
+import * as Yup from "yup";
 
 export default function LoginScreenScreen() {
   const [email, setEmail] = useState("");
