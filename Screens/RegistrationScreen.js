@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
   },
   logInWrap: {
     flexDirection: "row",
-    paddingBottom: 45,
+    paddingBottom: 66,
   },
   logInText: {
     color: "#1B4371",
