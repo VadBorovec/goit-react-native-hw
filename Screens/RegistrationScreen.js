@@ -43,7 +43,7 @@ export default function RegistrationScreen() {
       .max(20, "Login must be at most 20 characters")
       .matches(/^\S*$/, "Login cannot contain spaces"),
     email: Yup.string()
-      .required("Email is required")
+      .required("E-mail is required")
       .email("Invalid email address"),
     password: Yup.string()
       .required("Password is required")
@@ -192,7 +192,6 @@ export default function RegistrationScreen() {
                   )}
                 </Formik>
               </View>
-
               <View style={styles.logInWrap}>
                 <Text style={styles.logInText}>Already have an account?</Text>
                 <TouchableOpacity onPress={() => navigation.navigate("Login")}>
