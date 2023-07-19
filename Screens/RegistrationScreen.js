@@ -55,7 +55,7 @@ export default function RegistrationScreen() {
       ),
   });
 
-  const handleSignup = (values, { resetForm }) => {
+  const handleSubmit = (values, { resetForm }) => {
     console.log(values);
     navigation.navigate("Posts");
     resetForm();
@@ -67,7 +67,7 @@ export default function RegistrationScreen() {
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? -190 : -180}
+        keyboardVerticalOffset={Platform.OS === "ios" ? -180 : -180}
       >
         <ImageBackground style={styles.background} source={Background}>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -90,7 +90,7 @@ export default function RegistrationScreen() {
                 <Formik
                   initialValues={initialValues}
                   validationSchema={validationSchema}
-                  onSubmit={handleSignup}
+                  onSubmit={handleSubmit}
                 >
                   {({
                     handleChange,
