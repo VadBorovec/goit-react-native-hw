@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  ScrollView,
   View,
   Text,
   ImageBackground,
@@ -10,6 +11,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   StyleSheet,
+  Platform,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
@@ -64,127 +66,140 @@ export default function RegistrationScreen() {
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -220}
       >
         <ImageBackground style={styles.background} source={Background}>
-          <View style={styles.form}>
-            <View style={styles.avatarContainer}>
-              <Image style={styles.avatar} source={AvatarPlaceholder} />
-              <TouchableOpacity
-                style={styles.addAvatarButton}
-                onPress={() => setIsAvatarAdded(!isAvatarAdded)}
-              >
-                {isAvatarAdded ? (
-                  <Feather name="x-circle" size={24} color="#BDBDBD" />
-                ) : (
-                  <Feather name="plus-circle" size={24} color="#FF6C00" />
-                )}
-              </TouchableOpacity>
-            </View>
-            <Text style={styles.header}>Sign up</Text>
-            <View style={styles.formikWrap}>
-              <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={handleSignup}
-              >
-                {({ handleChange, handleSubmit, values, errors, touched }) => (
-                  <View>
-                    <View style={styles.inputWrap}>
-                      <TextInput
-                        style={[
-                          styles.input,
-                          isLoginFocused && styles.inputFocused,
-                          errors.login && touched.login && styles.inputError,
-                        ]}
-                        value={values.login}
-                        onChangeText={handleChange("login")}
-                        placeholder="Login"
-                        onFocus={() => setIsLoginFocused(true)}
-                        onBlur={() => setIsLoginFocused(false)}
-                      />
-                      {errors.login && touched.login && (
-                        <Text style={styles.errorText}>{errors.login}</Text>
-                      )}
-                    </View>
-                    <View style={styles.inputWrap}>
-                      <TextInput
-                        style={[
-                          styles.input,
-                          isEmailFocused && styles.inputFocused,
-                          errors.email && touched.email && styles.inputError,
-                        ]}
-                        value={values.email}
-                        onChangeText={handleChange("email")}
-                        placeholder="E-mail"
-                        keyboardType="email-address"
-                        onFocus={() => setIsEmailFocused(true)}
-                        onBlur={() => setIsEmailFocused(false)}
-                      />
-                      {errors.email && touched.email && (
-                        <Text style={styles.errorText}>{errors.email}</Text>
-                      )}
-                    </View>
-                    <View style={styles.inputWrapLast}>
-                      <View style={styles.inputPaswordWrap}>
+          <ScrollView contentContainerStyle={styles.scrollContainer}>
+            <View style={styles.form}>
+              <View style={styles.avatarContainer}>
+                <Image style={styles.avatar} source={AvatarPlaceholder} />
+                <TouchableOpacity
+                  style={styles.addAvatarButton}
+                  onPress={() => setIsAvatarAdded(!isAvatarAdded)}
+                >
+                  {isAvatarAdded ? (
+                    <Feather name="x-circle" size={24} color="#BDBDBD" />
+                  ) : (
+                    <Feather name="plus-circle" size={24} color="#FF6C00" />
+                  )}
+                </TouchableOpacity>
+              </View>
+              <Text style={styles.header}>Sign up</Text>
+              <View style={styles.formikWrap}>
+                <Formik
+                  initialValues={initialValues}
+                  validationSchema={validationSchema}
+                  onSubmit={handleSignup}
+                >
+                  {({
+                    handleChange,
+                    handleSubmit,
+                    values,
+                    errors,
+                    touched,
+                  }) => (
+                    <View>
+                      <View style={styles.inputWrap}>
                         <TextInput
                           style={[
                             styles.input,
-                            isPasswordFocused && styles.inputFocused,
-                            errors.password &&
-                              touched.password &&
-                              styles.inputError,
+                            isLoginFocused && styles.inputFocused,
+                            errors.login && touched.login && styles.inputError,
                           ]}
-                          value={values.password}
-                          onChangeText={handleChange("password")}
-                          placeholder="Password"
-                          secureTextEntry={isPasswordHidden}
-                          onFocus={() => setIsPasswordFocused(true)}
-                          onBlur={() => setIsPasswordFocused(false)}
+                          value={values.login}
+                          onChangeText={handleChange("login")}
+                          placeholder="Login"
+                          onFocus={() => setIsLoginFocused(true)}
+                          onBlur={() => setIsLoginFocused(false)}
                         />
-                        <TouchableOpacity
-                          style={styles.showPassword}
-                          onPress={() => setIsPasswordHiddn(!isPasswordHidden)}
-                        >
-                          {isPasswordHidden ? (
-                            <Feather
-                              name="eye-off"
-                              size={24}
-                              color="#1B4371"
-                              style={styles.showPassword}
-                            />
-                          ) : (
-                            <Feather
-                              name="eye"
-                              size={24}
-                              color="#FF6C00"
-                              style={styles.showPassword}
-                            />
-                          )}
-                        </TouchableOpacity>
+                        {errors.login && touched.login && (
+                          <Text style={styles.errorText}>{errors.login}</Text>
+                        )}
                       </View>
-                      {errors.password && touched.password && (
-                        <Text style={styles.errorText}>{errors.password}</Text>
-                      )}
+                      <View style={styles.inputWrap}>
+                        <TextInput
+                          style={[
+                            styles.input,
+                            isEmailFocused && styles.inputFocused,
+                            errors.email && touched.email && styles.inputError,
+                          ]}
+                          value={values.email}
+                          onChangeText={handleChange("email")}
+                          placeholder="E-mail"
+                          keyboardType="email-address"
+                          onFocus={() => setIsEmailFocused(true)}
+                          onBlur={() => setIsEmailFocused(false)}
+                        />
+                        {errors.email && touched.email && (
+                          <Text style={styles.errorText}>{errors.email}</Text>
+                        )}
+                      </View>
+                      <View style={styles.inputWrapLast}>
+                        <View style={styles.inputPaswordWrap}>
+                          <TextInput
+                            style={[
+                              styles.input,
+                              isPasswordFocused && styles.inputFocused,
+                              errors.password &&
+                                touched.password &&
+                                styles.inputError,
+                            ]}
+                            value={values.password}
+                            onChangeText={handleChange("password")}
+                            placeholder="Password"
+                            secureTextEntry={isPasswordHidden}
+                            onFocus={() => setIsPasswordFocused(true)}
+                            onBlur={() => setIsPasswordFocused(false)}
+                          />
+                          <TouchableOpacity
+                            style={styles.showPassword}
+                            onPress={() =>
+                              setIsPasswordHiddn(!isPasswordHidden)
+                            }
+                          >
+                            {isPasswordHidden ? (
+                              <Feather
+                                name="eye-off"
+                                size={24}
+                                color="#1B4371"
+                                style={styles.showPassword}
+                              />
+                            ) : (
+                              <Feather
+                                name="eye"
+                                size={24}
+                                color="#FF6C00"
+                                style={styles.showPassword}
+                              />
+                            )}
+                          </TouchableOpacity>
+                        </View>
+                        {errors.password && touched.password && (
+                          <Text style={styles.errorText}>
+                            {errors.password}
+                          </Text>
+                        )}
+                      </View>
+                      <TouchableOpacity
+                        title="Signup"
+                        style={styles.registerButton}
+                        onPress={handleSubmit}
+                      >
+                        <Text style={styles.registerButtonText}>Sign up</Text>
+                      </TouchableOpacity>
                     </View>
-                    <TouchableOpacity
-                      title="Signup"
-                      style={styles.registerButton}
-                      onPress={handleSubmit}
-                    >
-                      <Text style={styles.registerButtonText}>Sign up</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              </Formik>
-            </View>
+                  )}
+                </Formik>
+              </View>
 
-            <View style={styles.logInWrap}>
-              <Text style={styles.logInText}>Already have an account?</Text>
-              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-                <Text style={styles.logInLink}>Login</Text>
-              </TouchableOpacity>
+              <View style={styles.logInWrap}>
+                <Text style={styles.logInText}>Already have an account?</Text>
+                <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                  <Text style={styles.logInLink}>Login</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
+          </ScrollView>
         </ImageBackground>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
@@ -201,10 +216,14 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     flexShrink: 0,
   },
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: "flex-end",
+  },
   form: {
     // height: 549,
-    height: "67%",
-    flexShrink: 0,
+    // height: "67%",
+    flexGrow: 0.17,
     alignItems: "center",
     backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 25,
@@ -230,7 +249,7 @@ const styles = StyleSheet.create({
     height: 24,
     bottom: 14,
     right: -12,
-    borderRadius: "50%",
+    borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#FFFFFF",
@@ -242,7 +261,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontStyle: "normal",
     fontWeight: 500,
-    // lineHeight: "normal",
     letterSpacing: 0.3,
     marginBottom: 33,
   },
@@ -294,7 +312,6 @@ const styles = StyleSheet.create({
     height: 51,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 16,
     paddingHorizontal: 32,
     borderRadius: 100,
     backgroundColor: "#FF6C00",
@@ -305,7 +322,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontStyle: "normal",
     fontWeight: 400,
-    // lineHeight: "normal",
   },
   logInWrap: {
     flexDirection: "row",
@@ -316,14 +332,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontStyle: "normal",
     fontWeight: 400,
-    // lineHeight: "normal",
   },
   logInLink: {
     color: "#1B4371",
     fontSize: 16,
     fontStyle: "normal",
     fontWeight: 400,
-    // lineHeight: "normal",
     marginLeft: 8,
     textDecorationLine: "underline",
   },
