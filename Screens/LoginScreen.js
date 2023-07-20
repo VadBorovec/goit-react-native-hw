@@ -57,7 +57,7 @@ export default function LoginScreenScreen() {
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? -240 : -230}
+        keyboardVerticalOffset={Platform.OS === "ios" ? -240 : -250}
       >
         <ImageBackground style={styles.background} source={Background}>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
