@@ -1,161 +1,171 @@
-// import React from "react";
-// import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-// import { useNavigation } from "@react-navigation/native";
-
-// //Temporary markup
-// export default function CommentsScreen() {
-//   const navigation = useNavigation();
-
-//   return (
-//     <View style={styles.container}>
-//       <Text style={styles.heading}>Comments Screen</Text>
-//       <TouchableOpacity
-//         style={styles.text}
-//         onPress={() => navigation.navigate("Registration")}
-//       >
-//         <Text style={styles.text}>to Registration Screen</Text>
-//       </TouchableOpacity>
-//       <TouchableOpacity
-//         style={styles.text}
-//         onPress={() => navigation.navigate("Login")}
-//       >
-//         <Text style={styles.text}>to Login Screen</Text>
-//       </TouchableOpacity>
-//       <TouchableOpacity
-//         style={styles.text}
-//         onPress={() => navigation.navigate("Posts")}
-//       >
-//         <Text style={styles.text}>to Posts Screen</Text>
-//       </TouchableOpacity>
-//       <TouchableOpacity
-//         style={styles.text}
-//         onPress={() => navigation.navigate("Profile")}
-//       >
-//         <Text style={styles.text}>to Profile Screen</Text>
-//       </TouchableOpacity>
-//       <TouchableOpacity
-//         style={styles.text}
-//         onPress={() => navigation.navigate("CreatePost")}
-//       >
-//         <Text style={styles.text}>to Create Post Screen</Text>
-//       </TouchableOpacity>
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     resizeMode: "cover",
-//     justifyContent: "center",
-//     alignItems: "center",
-//     backgroundColor: "tomato",
-//   },
-//   heading: {
-//     fontSize: 24,
-//     fontWeight: 700,
-//     marginBottom: 20,
-//   },
-//   text: {
-//     fontSize: 18,
-//     fontWeight: 400,
-//     marginBottom: 10,
-//   },
-// });
-
-//! ===========
-
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
-  ImageBackground,
-  TouchableOpacity,
   Text,
+  Image,
+  FlatList,
   TextInput,
-  Button,
+  TouchableOpacity,
   KeyboardAvoidingView,
-  TouchableWithoutFeedback,
   Keyboard,
+  TouchableWithoutFeedback,
   StyleSheet,
   Platform,
-  ScrollView,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import { useRoute } from "@react-navigation/native";
 
-import Background from "../assets/images/background.jpg";
+import { users, posts, comments } from "../server/db";
 
-export default function CommentsScreen() {
-  const navigation = useNavigation();
+const CommentsScreen = () => {
+  const [comment, setComment] = useState("");
+  const [isCommentFocused, setIsCommentFocused] = useState(false);
+  const route = useRoute();
+  const { post } = route.params;
 
-  const handleBackdropPress = () => {
-    Keyboard.dismiss();
+  const postComments = comments.filter(
+    (comment) => comment.postId === post.postId
+  );
+
+  const renderItem = ({ item }) => {
+    const user = users.find((u) => u.userId === item.userId);
+    const isCurrentUser = user.userId === post.userId;
+
+    return (
+      <View
+        style={[
+          styles.commentContainer,
+          isCurrentUser ? styles.currentUserComment : styles.otherUserComment,
+        ]}
+      >
+        <Image source={{ uri: user.avatarImg }} style={styles.avatar} />
+
+        <View style={styles.commentContent}>
+          <Text style={styles.commentText}>{item.text}</Text>
+          <Text style={styles.commentAuthor}>{user.login}</Text>
+        </View>
+      </View>
+    );
   };
 
   return (
-    <TouchableWithoutFeedback onPress={handleBackdropPress}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -40}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 90}
       >
-        <ImageBackground style={styles.background} source={Background}>
-          <ScrollView contentContainerStyle={styles.scrollContainer}>
-            <View style={styles.content}>
-              <View style={styles.formContainer}>
-                <TextInput style={styles.input} placeholder="Username" />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Password"
-                  secureTextEntry
-                />
-                <Button
-                  title="Submit"
-                  onPress={() => console.log("Submit pressed")}
-                />
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("Profile")}
-                >
-                  <Text>to Profile Screen</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </ScrollView>
-        </ImageBackground>
+        <View style={styles.container}>
+          <Image source={post.imgUrl} style={styles.postImage} />
+          <Text style={styles.title}>{post.title}</Text>
+          <FlatList
+            data={postComments}
+            keyExtractor={(item) => item.commentId.toString()}
+            renderItem={renderItem}
+          />
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={[styles.input, isCommentFocused && styles.inputFocused]}
+              value={comment}
+              onChangeText={setComment}
+              placeholder="Write a comment..."
+              onFocus={() => setIsCommentFocused(true)}
+              onBlur={() => setIsCommentFocused(false)}
+            />
+            <TouchableOpacity
+              style={styles.inputSend}
+              onPress={() => {
+                console.log(`${comment}" - is sended`);
+                setComment("");
+              }}
+            >
+              <Ionicons name="arrow-up-circle" size={44} color="#FF6C00" />
+            </TouchableOpacity>
+          </View>
+        </View>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  background: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "flex-end",
-  },
-  scrollContainer: {
-    flexGrow: 1,
-    justifyContent: "flex-end",
-  },
-  content: {
-    height: 600,
     backgroundColor: "#fff",
-    padding: 25,
+    padding: 16,
   },
-  formContainer: {
-    justifyContent: "center",
+  postImage: {
+    width: "100%",
+    height: 200,
+    borderRadius: 8,
+    marginVertical: 10,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  commentContainer: {
+    flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    marginBottom: 10,
+  },
+  currentUserComment: {
+    justifyContent: "flex-start",
+  },
+  otherUserComment: {
+    justifyContent: "flex-end",
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+  },
+  postImage: {
+    width: "100%",
+    height: 200,
+    marginBottom: 10,
+    resizeMode: "cover",
+  },
+  commentContent: {
+    flex: 1,
+  },
+  commentText: {
+    fontSize: 16,
+  },
+  commentAuthor: {
+    color: "#777",
+    marginTop: 2,
+  },
+  inputContainer: {
+    position: "relative",
+    flexDirection: "row",
+    alignItems: "center",
+    borderTopWidth: 1,
+    borderTopColor: "#E8E8E8",
+    paddingVertical: 8,
   },
   input: {
-    width: "80%",
-    height: 40,
-    marginBottom: 10,
-    paddingHorizontal: 10,
+    flex: 1,
+    height: 50,
+    flexShrink: 0,
+    color: "#BDBDBD",
+    backgroundColor: "#F6F6F6",
+    borderColor: "#E8E8E8",
     borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 5,
+    borderRadius: 100,
+    paddingHorizontal: 16,
+  },
+  inputFocused: {
+    color: "#212121",
+    backgroundColor: "#FFFFFF",
+    borderColor: "#FF6C00",
+  },
+  inputSend: {
+    position: "absolute",
+    right: 5,
+    bottom: 9,
   },
 });
+
+export default CommentsScreen;

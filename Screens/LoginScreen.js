@@ -47,7 +47,7 @@ export default function LoginScreenScreen() {
 
   const handleSubmit = (values, { resetForm }) => {
     console.log(values);
-    navigation.navigate("Posts");
+    navigation.navigate("Home");
     resetForm();
     setIsPasswordHidden(true);
   };
@@ -66,7 +66,7 @@ export default function LoginScreenScreen() {
               <View style={styles.formikWrap}>
                 <Formik
                   initialValues={initialValues}
-                  validationSchema={validationSchema}
+                  // validationSchema={validationSchema}
                   onSubmit={handleSubmit}
                 >
                   {({

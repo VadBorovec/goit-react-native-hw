@@ -1,0 +1,75 @@
+{
+  "posts": [
+    {
+      "postId": 1,
+      "imgUrl": "require('../assets/images/post1-wood.jpg')",
+      "title": "Post 1",
+      "likes": 10,
+      "userId": 1
+    },
+    {
+      "postId": 2,
+       "imgUrl": "require('../assets/images/post2-sunset.jpg')",
+      "title": "Post 2",
+      "likes": 5,
+      "userId": 2
+    },
+    {
+      "postId": 3,
+      "imgUrl": "require('../assets/images/post3-house.jpg')",
+      "title": "Post 3",
+      "likes": 15,
+      "userId": 3
+    }
+  ],
+  "users": [
+    {
+      "userId": 1,
+      "login": "user1",
+      "email": "user1@example.com",
+      "password": "password1",
+      "avatarImg": "require('../assets/images/avatar-large.jpg')"
+    },
+    {
+      "userId": 2,
+      "login": "user2",
+      "email": "user2@example.com",
+      "password": "password2",
+      "avatarImg": "require('/assets/images/avatar-large.jpg')"
+    },
+    {
+      "userId": 3,
+      "login": "user3",
+      "email": "user3@example.com",
+      "password": "password3",
+      "avatarImg": "require('/assets/images/avatar-large.jpg')"
+    }
+  ],
+  "comments": [
+    {
+      "commentId": 1,
+      "text": "Comment 1 for Post 1",
+      "userId": 1
+    },
+    {
+      "commentId": 2,
+      "text": "Comment 2 for Post 1",
+      "userId": 2
+    },
+    {
+      "commentId": 3,
+      "text": "Comment 3 for Post 2",
+      "userId": 3
+    },
+    {
+      "commentId": 4,
+      "text": "Comment 4 for Post 3",
+      "userId": 1
+    },
+    {
+      "commentId": 5,
+      "text": "Comment 5 for Post 3",
+      "userId": 2
+    }
+  ]
+}
