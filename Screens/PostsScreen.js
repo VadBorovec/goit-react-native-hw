@@ -1,64 +1,139 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { Feather } from "@expo/vector-icons";
+import { posts, users, comments } from "../server/db";
 
-//Temporary markup
-export default function PostsScreen() {
+const PostsScreen = () => {
   const navigation = useNavigation();
+
+  const handleCommentsPress = (post) => {
+    navigation.navigate("Comments", { post });
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Posts Screen</Text>
-      <TouchableOpacity
-        style={styles.text}
-        onPress={() => navigation.navigate("Registration")}
-      >
-        <Text style={styles.text}>to Registration Screen</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.text}
-        onPress={() => navigation.navigate("Login")}
-      >
-        <Text style={styles.text}>to Login Screen</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.text}
-        onPress={() => navigation.navigate("Profile")}
-      >
-        <Text style={styles.text}>to Profile Screen</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.text}
-        onPress={() => navigation.navigate("CreatePost")}
-      >
-        <Text style={styles.text}>to Create Post Screen</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.text}
-        onPress={() => navigation.navigate("Comments")}
-      >
-        <Text style={styles.text}>to Comments Screen</Text>
-      </TouchableOpacity>
+      <FlatList
+        data={posts}
+        keyExtractor={(item) => item.postId.toString()}
+        renderItem={({ item }) => {
+          const user = users.find((u) => u.userId === item.userId);
+          const postComments = comments.filter((c) => c.postId === item.postId);
+
+          return (
+            <View style={styles.postContainer}>
+              <View style={styles.userInfoContainer}>
+                <Image source={user.avatarImg} style={styles.avatar} />
+                <View style={styles.userInfo}>
+                  <Text style={styles.login}>{user.login}</Text>
+                  <Text style={styles.email}>{user.email}</Text>
+                </View>
+              </View>
+              <Image source={item.imgUrl} style={styles.postImage} />
+              <Text style={styles.title}>{item.title}</Text>
+              <View style={styles.infoContainer}>
+                <View style={styles.iconsContainer}>
+                  <TouchableOpacity
+                    style={styles.iconRow}
+                    onPress={() => handleCommentsPress(item)}
+                  >
+                    <Feather name="message-circle" size={24} color="#FF6C00" />
+                    <Text style={styles.infoText}>{postComments.length}</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                    <View style={styles.iconRow}>
+                      <Feather name="heart" size={24} color="#FF6C00" />
+                      <Text style={styles.infoText}>{item.likes}</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                <TouchableOpacity>
+                  <View style={styles.iconRow}>
+                    <Feather name="map-pin" size={24} color="#BDBDBD" />
+                    <Text style={styles.locationText}>{item.location}</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+          );
+        }}
+      />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
+    backgroundColor: "#fff",
+  },
+  postContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "#E8E8E8",
+  },
+  userInfoContainer: {
+    flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "yellow",
   },
-  heading: {
-    fontSize: 24,
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 16,
+    marginRight: 10,
+  },
+  userInfo: {
+    flex: 1,
+  },
+  login: {
+    fontSize: 13,
     fontWeight: 700,
-    marginBottom: 20,
   },
-  text: {
-    fontSize: 18,
+  email: {
+    fontSize: 11,
     fontWeight: 400,
-    marginBottom: 10,
+    color: "#777",
+  },
+  postImage: {
+    width: "100%",
+    height: 240,
+    borderRadius: 8,
+    marginVertical: 10,
+  },
+  title: {
+    fontFamily: "JosefinSansBold",
+    fontSize: 16,
+    fontWeight: 500,
+    color: "#212121",
+    paddingLeft: 5,
+  },
+  infoContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 5,
+  },
+  iconsContainer: {
+    flexDirection: "row",
+  },
+  iconRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  infoText: {
+    paddingLeft: 6,
+    paddingRight: 20,
+  },
+  locationText: {
+    paddingLeft: 6,
   },
 });
+
+export default PostsScreen;

@@ -47,7 +47,7 @@ export default function LoginScreenScreen() {
 
   const handleSubmit = (values, { resetForm }) => {
     console.log(values);
-    navigation.navigate("Posts");
+    navigation.navigate("Home");
     resetForm();
     setIsPasswordHidden(true);
   };
@@ -57,7 +57,7 @@ export default function LoginScreenScreen() {
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? -240 : -230}
+        keyboardVerticalOffset={Platform.OS === "ios" ? -240 : -250}
       >
         <ImageBackground style={styles.background} source={Background}>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -66,7 +66,7 @@ export default function LoginScreenScreen() {
               <View style={styles.formikWrap}>
                 <Formik
                   initialValues={initialValues}
-                  validationSchema={validationSchema}
+                  // validationSchema={validationSchema}
                   onSubmit={handleSubmit}
                 >
                   {({

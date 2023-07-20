@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import "react-native-gesture-handler";
@@ -8,6 +9,7 @@ import { StatusBar } from "expo-status-bar";
 
 import RegistrationScreen from "./Screens/RegistrationScreen";
 import LoginScreen from "./Screens/LoginScreen";
+import Home from "./Screens/Home";
 import PostsScreen from "./Screens/PostsScreen";
 import CreatePostScreen from "./Screens/CreatePostScreen";
 import ProfileScreen from "./Screens/ProfileScreen";
@@ -28,7 +30,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Registration">
+      <Stack.Navigator initialRouteName="Login">
         <Stack.Screen
           name="Registration"
           component={RegistrationScreen}
@@ -40,10 +42,32 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Posts"
-          component={PostsScreen}
+          name="Home"
+          component={Home}
           options={{ headerShown: false }}
         />
+        {/* <Stack.Screen
+          name="Posts"
+          component={PostsScreen}
+          options={{
+            title: "Posts",
+            headerStyle: {
+              backgroundColor: "#f4511e",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+              fontSize: 20,
+            },
+            headerRight: () => (
+              <Button
+                onPress={() => alert("This is a button!")}
+                title="Press me"
+                color="#fff"
+              />
+            ),
+          }}
+        /> */}
         <Stack.Screen
           name="Profile"
           component={ProfileScreen}
@@ -52,12 +76,12 @@ export default function App() {
         <Stack.Screen
           name="CreatePost"
           component={CreatePostScreen}
-          options={{ headerShown: false }}
+          options={{ title: "Create Post" }}
         />
         <Stack.Screen
           name="Comments"
           component={CommentsScreen}
-          options={{ headerShown: false }}
+          options={{ title: "Comments" }}
         />
       </Stack.Navigator>
       <StatusBar style="auto" />
