@@ -38,8 +38,7 @@ const CommentsScreen = () => {
           isCurrentUser ? styles.currentUserComment : styles.otherUserComment,
         ]}
       >
-        <Image source={{ uri: user.avatarImg }} style={styles.avatar} />
-
+        <Image source={user.avatarImg} style={styles.avatar} />
         <View style={styles.commentContent}>
           <Text style={styles.commentText}>{item.text}</Text>
           <Text style={styles.commentAuthor}>{user.login}</Text>
@@ -55,9 +54,11 @@ const CommentsScreen = () => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 90}
       >
-        <View style={styles.container}>
-          <Image source={post.imgUrl} style={styles.postImage} />
-          <Text style={styles.title}>{post.title}</Text>
+        <View style={styles.content}>
+          <View style={styles.imgContainer}>
+            <Image source={post.imgUrl} style={styles.postImage} />
+            <Text style={styles.title}>{post.title}</Text>
+          </View>
           <FlatList
             data={postComments}
             keyExtractor={(item) => item.commentId.toString()}
@@ -91,18 +92,30 @@ const CommentsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  content: {
+    flex: 1,
     backgroundColor: "#fff",
     padding: 16,
   },
+  imgContainer: {
+    paddingBottom: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: "#E8E8E8",
+    marginBottom: 12,
+  },
   postImage: {
     width: "100%",
-    height: 200,
+    height: 240,
     borderRadius: 8,
-    marginVertical: 10,
+    // marginVertical: 10,
   },
   title: {
-    fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "JosefinSansBold",
+    fontSize: 16,
+    fontWeight: 500,
+    color: "#212121",
+    paddingLeft: 5,
   },
   commentContainer: {
     flexDirection: "row",
@@ -110,16 +123,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   currentUserComment: {
-    justifyContent: "flex-start",
+    flexDirection: "row-reverse",
+    // justifyContent: "flex-start",
   },
   otherUserComment: {
-    justifyContent: "flex-end",
+    // justifyContent: "flex-end",
   },
   avatar: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    marginRight: 10,
+    marginHorizontal: 10,
   },
   postImage: {
     width: "100%",
@@ -129,6 +143,13 @@ const styles = StyleSheet.create({
   },
   commentContent: {
     flex: 1,
+    backgroundColor: "#F0F0F0",
+    borderTopLeftRadius: 6,
+    borderTopRightRadius: 6,
+    borderBottomLeftRadius: 6,
+    borderBottomRightRadius: 6,
+
+    padding: 5,
   },
   commentText: {
     fontSize: 16,
