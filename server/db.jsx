@@ -29,21 +29,21 @@ export const posts = [
 export const users = [
   {
     userId: 1,
-    login: "user1",
+    login: "Jane Doe",
     email: "user1@example.com",
     password: "password1",
     avatarImg: require("../assets/images/avatar-large.jpg"),
   },
   {
     userId: 2,
-    login: "user2",
+    login: "Anthony Davis",
     email: "user2@example.com",
     password: "password2",
     avatarImg: require("../assets/images/avatar-large.jpg"),
   },
   {
     userId: 3,
-    login: "user3",
+    login: "Myna Mazaylo",
     email: "user3@example.com",
     password: "password3",
     avatarImg: require("../assets/images/avatar-large.jpg"),
@@ -94,7 +94,7 @@ export const comments = [
     userId: 1,
   },
   {
-    commentId: 7,
+    commentId: 8,
     text: "Gotcha🌞🏄‍♂️",
     postId: 2,
     userId: 2,
