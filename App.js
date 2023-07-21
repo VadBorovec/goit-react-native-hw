@@ -46,6 +46,15 @@ export default function App() {
           component={Home}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="Comments"
+          component={CommentsScreen}
+          options={{ title: "Comments" }}
+        />
+
+        {/* !!! PostsScreen, CreatePostScreen, ProfileScreen
+        - навігація через  createBottomTabNavigator ???*/}
+
         {/* <Stack.Screen
           name="Posts"
           component={PostsScreen}
@@ -67,7 +76,7 @@ export default function App() {
               />
             ),
           }}
-        /> */}
+        />
         <Stack.Screen
           name="Profile"
           component={ProfileScreen}
@@ -77,12 +86,7 @@ export default function App() {
           name="CreatePost"
           component={CreatePostScreen}
           options={{ title: "Create Post" }}
-        />
-        <Stack.Screen
-          name="Comments"
-          component={CommentsScreen}
-          options={{ title: "Comments" }}
-        />
+        /> */}
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>

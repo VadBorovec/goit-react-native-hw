@@ -10,8 +10,6 @@ import { useNavigation } from "@react-navigation/native";
 
 const Tabs = createBottomTabNavigator();
 
-const TAB_BAR_HEIGHT = 183;
-
 export default function Home() {
   const navigation = useNavigation();
 
@@ -75,7 +73,6 @@ export default function Home() {
             <TouchableOpacity
               onPress={() => {
                 console.log("Press Back Button");
-
                 navigation.navigate("Posts");
               }}
             >
@@ -97,10 +94,3 @@ export default function Home() {
     </Tabs.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    height: TAB_BAR_HEIGHT,
-  },
-});

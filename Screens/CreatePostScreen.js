@@ -28,7 +28,6 @@ const CreatePostScreen = () => {
       >
         <View>
           {photoUploaded ? (
-            // Display when a photo is uploaded
             <View style={styles.photoUploadWrapper}>
               <View style={styles.skeleton}>
                 <TouchableOpacity style={styles.ellipse}>
@@ -38,7 +37,6 @@ const CreatePostScreen = () => {
               <Text style={styles.title}>Edit Photo</Text>
             </View>
           ) : (
-            // Display when no photo is uploaded
             <View style={styles.photoUploadWrapper}>
               <View style={styles.skeleton}>
                 <TouchableOpacity style={styles.ellipse}>

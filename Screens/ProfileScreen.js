@@ -15,7 +15,7 @@ import {
   Platform,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Feather } from "@expo/vector-icons";
+import { Feather, FontAwesome } from "@expo/vector-icons";
 import Background from "../assets/images/background.jpg";
 import AvatarPlaceholder from "../assets/images/avatar-large.jpg";
 
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   wrapper: {
-    height: 549,
+    height: "80%",
     backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
