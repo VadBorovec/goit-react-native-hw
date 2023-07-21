@@ -119,7 +119,9 @@ export default function ProfileScreen() {
                           </View>
                         </TouchableOpacity>
                       </View>
-                      <TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => navigation.navigate("Map")}
+                      >
                         <View style={styles.iconRow}>
                           <Feather name="map-pin" size={24} color="#BDBDBD" />
                           <Text style={styles.locationText}>

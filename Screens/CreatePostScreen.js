@@ -10,39 +10,119 @@ import {
   StyleSheet,
   Platform,
 } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import {
+  Feather,
+  FontAwesome,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
+import { Camera } from "expo-camera";
+import { useNavigation } from "@react-navigation/native";
+import useCamera from "../hooks/getCamera";
+import useGetCurrentLocation from "../hooks/getLocation";
 
-const CreatePostScreen = () => {
-  const [photoUploaded, setPhotoUploaded] = useState(false);
+export default function CreatePostScreen() {
   const [postTitle, setPostTitle] = useState("");
   const [isTitleFocused, setIsTitleFocused] = useState(false);
   const [geolocation, setGeolocation] = useState("");
   const [isGeolocationFocused, setIsGeolocationFocused] = useState(false);
+  const [isPhotoTaken, setIsPhotoTaken] = useState(false);
+
+  const navigation = useNavigation();
+  const location = useGetCurrentLocation();
+  const {
+    hasPermission,
+    setCameraRef,
+    cameraType,
+    handleCameraFlip,
+    takePhoto,
+    photoUri,
+    setPhotoUri,
+  } = useCamera();
+
+  if (hasPermission === null) {
+    return <View />;
+  }
+  if (hasPermission === false) {
+    return <Text>No acces to camera</Text>;
+  }
+
+  const handleTakePhoto = () => {
+    takePhoto();
+    setIsPhotoTaken(true);
+    console.log(`location - ${location};`);
+  };
+
+  const handleSubmit = () => {
+    if (!isPhotoTaken) {
+      alert("Previously make a shot");
+      return;
+    }
+
+    if (!postTitle) {
+      alert("Please add name and location");
+      return;
+    }
+
+    console.log(`
+      uri - ${photoUri};
+      title - ${postTitle};
+      location - ${location};
+      geolocationTitle - ${geolocation}:
+      isPhotoTaken - ${isPhotoTaken};
+      `);
+    alert("✅ Post published successfully! 🎉");
+    setPhotoUri(null);
+    setPostTitle("");
+    setGeolocation("");
+    setIsPhotoTaken(false);
+    navigation.navigate("Home", {
+      screen: "Posts",
+    });
+  };
+
+  const handleDelete = () => {
+    console.log("delete draft");
+    alert("Draft deleted");
+    setPhotoUri(null);
+    setPostTitle("");
+    setGeolocation("");
+    setIsPhotoTaken(false);
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        // keyboardVerticalOffset={Platform.OS === "ios" ? -180 : -180}
       >
         <View>
-          {photoUploaded ? (
-            <View style={styles.photoUploadWrapper}>
-              <View style={styles.skeleton}>
-                <TouchableOpacity style={styles.ellipse}>
-                  <Feather name="camera" size={30} color="#777" />
-                </TouchableOpacity>
-              </View>
+          <Camera style={styles.camera} type={cameraType} ref={setCameraRef}>
+            <View style={styles.photoView}>
+              <TouchableOpacity
+                style={styles.flipContainer}
+                onPress={handleCameraFlip}
+              >
+                <MaterialCommunityIcons
+                  name="camera-flip"
+                  size={30}
+                  color="#FFF"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.ellipse}
+                onPress={handleTakePhoto}
+              >
+                <FontAwesome name="camera" size={30} color="#FFF" />
+              </TouchableOpacity>
+            </View>
+          </Camera>
+
+          {isPhotoTaken ? (
+            <View style={styles.titleWrapper}>
               <Text style={styles.title}>Edit Photo</Text>
             </View>
           ) : (
-            <View style={styles.photoUploadWrapper}>
-              <View style={styles.skeleton}>
-                <TouchableOpacity style={styles.ellipse}>
-                  <Feather name="camera" size={30} color="#777" />
-                </TouchableOpacity>
-              </View>
+            <View style={styles.titleWrapper}>
               <Text style={styles.title}>Upload Photo</Text>
             </View>
           )}
@@ -75,20 +155,14 @@ const CreatePostScreen = () => {
 
             <TouchableOpacity
               style={styles.publishButton}
-              onPress={() => {
-                console.log("Publish Post");
-                alert("Publish Post");
-              }}
+              onPress={handleSubmit}
             >
               <Text style={styles.publishButtonText}>Publish</Text>
             </TouchableOpacity>
           </View>
           <TouchableOpacity
             style={styles.deletePostWrapper}
-            onPress={() => {
-              console.log("delete draft");
-              alert("Delete Draft");
-            }}
+            onPress={handleDelete}
           >
             <Feather name="trash-2" size={24} color="#BDBDBD" />
           </TouchableOpacity>
@@ -96,7 +170,7 @@ const CreatePostScreen = () => {
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -104,24 +178,32 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: "#fff",
   },
-  photoUploadWrapper: {
-    marginBottom: 32,
+  camera: {
+    marginBottom: 8,
   },
-  skeleton: {
+  photoView: {
+    position: "relative",
     alignItems: "center",
     justifyContent: "center",
     height: 200,
     borderRadius: 8,
-    backgroundColor: "#E8E8E8",
-    marginBottom: 8,
+    backgroundColor: "transparent",
+  },
+  flipContainer: {
+    position: "absolute",
+    top: 10,
+    right: 10,
   },
   ellipse: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#FFFFFF4D",
     alignItems: "center",
     justifyContent: "center",
+  },
+  titleWrapper: {
+    marginBottom: 32,
   },
   title: {
     paddingLeft: 8,
@@ -185,5 +267,3 @@ const styles = StyleSheet.create({
     backgroundColor: "#F6F6F6",
   },
 });
-
-export default CreatePostScreen;

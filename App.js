@@ -9,6 +9,7 @@ import { StatusBar } from "expo-status-bar";
 import RegistrationScreen from "./Screens/RegistrationScreen";
 import LoginScreen from "./Screens/LoginScreen";
 import Home from "./Screens/Home";
+import MapScreen from "./Screens/MapScreen";
 import PostsScreen from "./Screens/PostsScreen";
 import CreatePostScreen from "./Screens/CreatePostScreen";
 import ProfileScreen from "./Screens/ProfileScreen";
@@ -49,6 +50,11 @@ export default function App() {
           name="Comments"
           component={CommentsScreen}
           options={{ title: "Comments" }}
+        />
+        <Stack.Screen
+          name="Map"
+          component={MapScreen}
+          options={{ title: "Location" }}
         />
 
         {/* !!! PostsScreen, CreatePostScreen, ProfileScreen
