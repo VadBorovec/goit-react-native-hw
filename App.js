@@ -4,7 +4,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import "react-native-gesture-handler";
 import { useFonts } from "expo-font";
-
 import { StatusBar } from "expo-status-bar";
 
 import RegistrationScreen from "./Screens/RegistrationScreen";
