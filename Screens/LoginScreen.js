@@ -67,7 +67,7 @@ export default function LoginScreenScreen() {
               <View style={styles.formikWrap}>
                 <Formik
                   initialValues={initialValues}
-                  // validationSchema={validationSchema}
+                  validationSchema={validationSchema}
                   onSubmit={handleSubmit}
                 >
                   {({
