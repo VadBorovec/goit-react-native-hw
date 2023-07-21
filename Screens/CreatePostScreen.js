@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -15,31 +15,30 @@ import {
   FontAwesome,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import { Camera } from "expo-camera";
-import * as MediaLibrary from "expo-media-library";
+import { useNavigation } from "@react-navigation/native";
+import useCamera from "../hooks/getCamera";
+import useGetCurrentLocation from "../hooks/getLocation";
 
-const CreatePostScreen = () => {
-  const [hasPermission, setHasPermission] = useState(null);
-  const [cameraRef, setCameraRef] = useState(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
-
-  const [isPhotoTaken, setIsPhotoTaken] = useState(false);
+export default function CreatePostScreen() {
+  const [photo, setPhoto] = useState(null);
   const [postTitle, setPostTitle] = useState("");
   const [isTitleFocused, setIsTitleFocused] = useState(false);
   const [geolocation, setGeolocation] = useState("");
   const [isGeolocationFocused, setIsGeolocationFocused] = useState(false);
 
   const navigation = useNavigation();
+  const location = useGetCurrentLocation();
+  const {
+    hasPermission,
+    cameraRef,
+    setCameraRef,
+    type,
+    isPhotoTaken,
+    handleCameraFlip,
+    takePhoto,
+  } = useCamera();
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      await MediaLibrary.requestPermissionsAsync();
-
-      setHasPermission(status === "granted");
-    })();
-  }, []);
   if (hasPermission === null) {
     return <View />;
   }
@@ -64,13 +63,7 @@ const CreatePostScreen = () => {
             <View style={styles.photoView}>
               <TouchableOpacity
                 style={styles.flipContainer}
-                onPress={() => {
-                  setType(
-                    type === Camera.Constants.Type.back
-                      ? Camera.Constants.Type.front
-                      : Camera.Constants.Type.back
-                  );
-                }}
+                onPress={handleCameraFlip}
               >
                 <MaterialCommunityIcons
                   name="camera-flip"
@@ -78,15 +71,7 @@ const CreatePostScreen = () => {
                   color="#FFF"
                 />
               </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.ellipse}
-                onPress={async () => {
-                  if (cameraRef) {
-                    const { uri } = await cameraRef.takePictureAsync();
-                    await MediaLibrary.createAssetAsync(uri);
-                  }
-                }}
-              >
+              <TouchableOpacity style={styles.ellipse} onPress={takePhoto}>
                 <FontAwesome name="camera" size={30} color="#FFF" />
               </TouchableOpacity>
             </View>
@@ -148,7 +133,7 @@ const CreatePostScreen = () => {
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -245,5 +230,3 @@ const styles = StyleSheet.create({
     backgroundColor: "#F6F6F6",
   },
 });
-
-export default CreatePostScreen;
