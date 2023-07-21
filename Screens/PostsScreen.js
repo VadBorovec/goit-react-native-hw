@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,11 +8,24 @@ import {
   StyleSheet,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Feather } from "@expo/vector-icons";
+import { Feather, FontAwesome } from "@expo/vector-icons";
 import { posts, users, comments } from "../server/db";
 
 const PostsScreen = () => {
+  const [likedPosts, setLikedPosts] = useState([]);
   const navigation = useNavigation();
+
+  const toggleLike = (postId) => {
+    setLikedPosts((prevLikedPosts) => {
+      if (prevLikedPosts.includes(postId)) {
+        // Unlike the post
+        return prevLikedPosts.filter((id) => id !== postId);
+      } else {
+        // Like the post
+        return [...prevLikedPosts, postId];
+      }
+    });
+  };
 
   const handleCommentsPress = (post) => {
     navigation.navigate("Comments", { post });
@@ -26,6 +39,8 @@ const PostsScreen = () => {
         renderItem={({ item }) => {
           const user = users.find((u) => u.userId === item.userId);
           const postComments = comments.filter((c) => c.postId === item.postId);
+          const isLiked = likedPosts.includes(item.postId);
+          const getLikeCount = () => (isLiked ? item.likes + 1 : item.likes);
 
           return (
             <View style={styles.postContainer}>
@@ -47,10 +62,14 @@ const PostsScreen = () => {
                     <Feather name="message-circle" size={24} color="#FF6C00" />
                     <Text style={styles.infoText}>{postComments.length}</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => toggleLike(item.postId)}>
                     <View style={styles.iconRow}>
-                      <Feather name="heart" size={24} color="#FF6C00" />
-                      <Text style={styles.infoText}>{item.likes}</Text>
+                      {isLiked ? (
+                        <FontAwesome name="heart" size={24} color="#FF6C00" />
+                      ) : (
+                        <Feather name="heart" size={24} color="#FF6C00" />
+                      )}
+                      <Text style={styles.infoText}>{getLikeCount()}</Text>
                     </View>
                   </TouchableOpacity>
                 </View>
