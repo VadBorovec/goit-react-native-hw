@@ -47,6 +47,7 @@ export default function LoginScreenScreen() {
 
   const handleSubmit = (values, { resetForm }) => {
     console.log(values);
+    alert(`${values.email}, Welcome back! Login Successful! 🎉`);
     navigation.navigate("Home");
     resetForm();
     setIsPasswordHidden(true);
