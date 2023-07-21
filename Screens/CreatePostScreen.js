@@ -34,7 +34,7 @@ const CreatePostScreen = () => {
 
   useEffect(() => {
     (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
+      const { status } = await Camera.requestCameraPermissionsAsync();
       await MediaLibrary.requestPermissionsAsync();
 
       setHasPermission(status === "granted");
@@ -47,6 +47,12 @@ const CreatePostScreen = () => {
     return <Text>No acces to camera</Text>;
   }
 
+  const handleSubmit = () => {
+    console.log("Publish Post");
+    navigation.navigate("Home", {
+      screen: "Posts",
+    });
+  };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
@@ -124,10 +130,7 @@ const CreatePostScreen = () => {
 
             <TouchableOpacity
               style={styles.publishButton}
-              onPress={() => {
-                console.log("Publish Post");
-                navigation.navigate("Home");
-              }}
+              onPress={handleSubmit}
             >
               <Text style={styles.publishButtonText}>Publish</Text>
             </TouchableOpacity>
