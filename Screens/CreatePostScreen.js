@@ -31,7 +31,6 @@ export default function CreatePostScreen() {
   const location = useGetCurrentLocation();
   const {
     hasPermission,
-    cameraRef,
     setCameraRef,
     cameraType,
     handleCameraFlip,
@@ -50,12 +49,28 @@ export default function CreatePostScreen() {
   const handleTakePhoto = () => {
     takePhoto();
     setIsPhotoTaken(true);
+    console.log(`location - ${location};`);
   };
 
   const handleSubmit = () => {
-    console.log(
-      `uri - ${photoUri}; title - ${postTitle}; geolocation - ${geolocation} `
-    );
+    if (!isPhotoTaken) {
+      alert("Previously make a shot");
+      return;
+    }
+
+    if (!postTitle) {
+      alert("Please add name and location");
+      return;
+    }
+
+    console.log(`
+      uri - ${photoUri};
+      title - ${postTitle};
+      location - ${location};
+      geolocationTitle - ${geolocation}:
+      isPhotoTaken - ${isPhotoTaken};
+      `);
+    alert("✅ Post published successfully! 🎉");
     setPhotoUri(null);
     setPostTitle("");
     setGeolocation("");
