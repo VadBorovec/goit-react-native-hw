@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -10,39 +10,88 @@ import {
   StyleSheet,
   Platform,
 } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import {
+  Feather,
+  FontAwesome,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { Camera } from "expo-camera";
+import * as MediaLibrary from "expo-media-library";
 
 const CreatePostScreen = () => {
-  const [photoUploaded, setPhotoUploaded] = useState(false);
+  const [hasPermission, setHasPermission] = useState(null);
+  const [cameraRef, setCameraRef] = useState(null);
+  const [type, setType] = useState(Camera.Constants.Type.back);
+
+  const [isPhotoTaken, setIsPhotoTaken] = useState(false);
   const [postTitle, setPostTitle] = useState("");
   const [isTitleFocused, setIsTitleFocused] = useState(false);
   const [geolocation, setGeolocation] = useState("");
   const [isGeolocationFocused, setIsGeolocationFocused] = useState(false);
+
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestPermissionsAsync();
+      await MediaLibrary.requestPermissionsAsync();
+
+      setHasPermission(status === "granted");
+    })();
+  }, []);
+  if (hasPermission === null) {
+    return <View />;
+  }
+  if (hasPermission === false) {
+    return <Text>No acces to camera</Text>;
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        // keyboardVerticalOffset={Platform.OS === "ios" ? -180 : -180}
       >
         <View>
-          {photoUploaded ? (
-            <View style={styles.photoUploadWrapper}>
-              <View style={styles.skeleton}>
-                <TouchableOpacity style={styles.ellipse}>
-                  <Feather name="camera" size={30} color="#777" />
-                </TouchableOpacity>
-              </View>
+          <Camera style={styles.camera} type={type} ref={setCameraRef}>
+            <View style={styles.photoView}>
+              <TouchableOpacity
+                style={styles.flipContainer}
+                onPress={() => {
+                  setType(
+                    type === Camera.Constants.Type.back
+                      ? Camera.Constants.Type.front
+                      : Camera.Constants.Type.back
+                  );
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="camera-flip"
+                  size={30}
+                  color="#FFF"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.ellipse}
+                onPress={async () => {
+                  if (cameraRef) {
+                    const { uri } = await cameraRef.takePictureAsync();
+                    await MediaLibrary.createAssetAsync(uri);
+                  }
+                }}
+              >
+                <FontAwesome name="camera" size={30} color="#FFF" />
+              </TouchableOpacity>
+            </View>
+          </Camera>
+
+          {isPhotoTaken ? (
+            <View style={styles.titleWrapper}>
               <Text style={styles.title}>Edit Photo</Text>
             </View>
           ) : (
-            <View style={styles.photoUploadWrapper}>
-              <View style={styles.skeleton}>
-                <TouchableOpacity style={styles.ellipse}>
-                  <Feather name="camera" size={30} color="#777" />
-                </TouchableOpacity>
-              </View>
+            <View style={styles.titleWrapper}>
               <Text style={styles.title}>Upload Photo</Text>
             </View>
           )}
@@ -77,7 +126,7 @@ const CreatePostScreen = () => {
               style={styles.publishButton}
               onPress={() => {
                 console.log("Publish Post");
-                alert("Publish Post");
+                navigation.navigate("Home");
               }}
             >
               <Text style={styles.publishButtonText}>Publish</Text>
@@ -87,7 +136,7 @@ const CreatePostScreen = () => {
             style={styles.deletePostWrapper}
             onPress={() => {
               console.log("delete draft");
-              alert("Delete Draft");
+              alert("Draft deleted");
             }}
           >
             <Feather name="trash-2" size={24} color="#BDBDBD" />
@@ -104,24 +153,32 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: "#fff",
   },
-  photoUploadWrapper: {
-    marginBottom: 32,
+  camera: {
+    marginBottom: 8,
   },
-  skeleton: {
+  photoView: {
+    position: "relative",
     alignItems: "center",
     justifyContent: "center",
     height: 200,
     borderRadius: 8,
-    backgroundColor: "#E8E8E8",
-    marginBottom: 8,
+    backgroundColor: "transparent",
+  },
+  flipContainer: {
+    position: "absolute",
+    top: 10,
+    right: 10,
   },
   ellipse: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#FFFFFF4D",
     alignItems: "center",
     justifyContent: "center",
+  },
+  titleWrapper: {
+    marginBottom: 32,
   },
   title: {
     paddingLeft: 8,
