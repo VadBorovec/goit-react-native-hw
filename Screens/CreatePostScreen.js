@@ -21,11 +21,11 @@ import useCamera from "../hooks/getCamera";
 import useGetCurrentLocation from "../hooks/getLocation";
 
 export default function CreatePostScreen() {
-  const [photo, setPhoto] = useState(null);
   const [postTitle, setPostTitle] = useState("");
   const [isTitleFocused, setIsTitleFocused] = useState(false);
   const [geolocation, setGeolocation] = useState("");
   const [isGeolocationFocused, setIsGeolocationFocused] = useState(false);
+  const [isPhotoTaken, setIsPhotoTaken] = useState(false);
 
   const navigation = useNavigation();
   const location = useGetCurrentLocation();
@@ -33,10 +33,11 @@ export default function CreatePostScreen() {
     hasPermission,
     cameraRef,
     setCameraRef,
-    type,
-    isPhotoTaken,
+    cameraType,
     handleCameraFlip,
     takePhoto,
+    photoUri,
+    setPhotoUri,
   } = useCamera();
 
   if (hasPermission === null) {
@@ -46,12 +47,33 @@ export default function CreatePostScreen() {
     return <Text>No acces to camera</Text>;
   }
 
+  const handleTakePhoto = () => {
+    takePhoto();
+    setIsPhotoTaken(true);
+  };
+
   const handleSubmit = () => {
-    console.log("Publish Post");
+    console.log(
+      `uri - ${photoUri}; title - ${postTitle}; geolocation - ${geolocation} `
+    );
+    setPhotoUri(null);
+    setPostTitle("");
+    setGeolocation("");
+    setIsPhotoTaken(false);
     navigation.navigate("Home", {
       screen: "Posts",
     });
   };
+
+  const handleDelete = () => {
+    console.log("delete draft");
+    alert("Draft deleted");
+    setPhotoUri(null);
+    setPostTitle("");
+    setGeolocation("");
+    setIsPhotoTaken(false);
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
@@ -59,7 +81,7 @@ export default function CreatePostScreen() {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <View>
-          <Camera style={styles.camera} type={type} ref={setCameraRef}>
+          <Camera style={styles.camera} type={cameraType} ref={setCameraRef}>
             <View style={styles.photoView}>
               <TouchableOpacity
                 style={styles.flipContainer}
@@ -71,7 +93,10 @@ export default function CreatePostScreen() {
                   color="#FFF"
                 />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.ellipse} onPress={takePhoto}>
+              <TouchableOpacity
+                style={styles.ellipse}
+                onPress={handleTakePhoto}
+              >
                 <FontAwesome name="camera" size={30} color="#FFF" />
               </TouchableOpacity>
             </View>
@@ -122,10 +147,7 @@ export default function CreatePostScreen() {
           </View>
           <TouchableOpacity
             style={styles.deletePostWrapper}
-            onPress={() => {
-              console.log("delete draft");
-              alert("Draft deleted");
-            }}
+            onPress={handleDelete}
           >
             <Feather name="trash-2" size={24} color="#BDBDBD" />
           </TouchableOpacity>

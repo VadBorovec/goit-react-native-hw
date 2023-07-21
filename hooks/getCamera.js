@@ -3,10 +3,10 @@ import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 
 export default function useCamera() {
+  const [photoUri, setPhotoUri] = useState(null);
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
-  const [isPhotoTaken, setIsPhotoTaken] = useState(false);
+  const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
 
   useEffect(() => {
     (async () => {
@@ -18,8 +18,8 @@ export default function useCamera() {
   }, []);
 
   const handleCameraFlip = () => {
-    setType(
-      type === Camera.Constants.Type.back
+    setCameraType(
+      cameraType === Camera.Constants.Type.back
         ? Camera.Constants.Type.front
         : Camera.Constants.Type.back
     );
@@ -29,7 +29,7 @@ export default function useCamera() {
     if (cameraRef) {
       const { uri } = await cameraRef.takePictureAsync();
       await MediaLibrary.createAssetAsync(uri);
-      setIsPhotoTaken(true);
+      setPhotoUri(uri);
     }
   };
 
@@ -37,9 +37,10 @@ export default function useCamera() {
     hasPermission,
     cameraRef,
     setCameraRef,
-    type,
-    isPhotoTaken,
+    cameraType,
     handleCameraFlip,
     takePhoto,
+    photoUri,
+    setPhotoUri,
   };
 }
