@@ -1,3 +1,4 @@
+// test
 import React from "react";
 import { TouchableOpacity, View, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
