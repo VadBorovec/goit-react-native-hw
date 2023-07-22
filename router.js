@@ -9,14 +9,10 @@ import { TouchableOpacity } from "react-native";
 // Auth Screens
 import RegistrationScreen from "./Screens/auth/RegistrationScreen";
 import LoginScreen from "./Screens/auth/LoginScreen";
-import Home from "./Screens/Home";
 // Main Screens
 import PostsScreen from "./Screens/mainScreens/PostsScreen";
 import CreatePostScreen from "./Screens/mainScreens/CreatePostScreen";
 import ProfileScreen from "./Screens/mainScreens/ProfileScreen";
-// Nested Screens
-import CommentsScreen from "./Screens/nestedScreens/CommentsScreen";
-import MapScreen from "./Screens/nestedScreens/MapScreen";
 
 const AuthStack = createStackNavigator();
 const MainTabs = createBottomTabNavigator();
@@ -38,19 +34,9 @@ export const useRoute = (isAuth, navigation) => {
           options={{ headerShown: false }}
         />
         <AuthStack.Screen
-          name="Home"
-          component={Home}
+          name="Posts"
+          component={PostsScreen}
           options={{ headerShown: false }}
-        />
-        <AuthStack.Screen
-          name="Comments"
-          component={CommentsScreen}
-          options={{ title: "Comments" }}
-        />
-        <AuthStack.Screen
-          name="Map"
-          component={MapScreen}
-          options={{ title: "Location" }}
         />
       </AuthStack.Navigator>
     );
