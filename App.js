@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import { Button } from "react-native";
+// import { Button } from "react-native";
+
+// Navigation
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import "react-native-gesture-handler";
-import { useFonts } from "expo-font";
+// Fonts
+import fontsLoaded from "./hooks/getFonts";
 import { StatusBar } from "expo-status-bar";
 
-import RegistrationScreen from "./Screens/RegistrationScreen";
-import LoginScreen from "./Screens/LoginScreen";
+// Screens
+import RegistrationScreen from "./Screens/auth/RegistrationScreen";
+import LoginScreen from "./Screens/auth/LoginScreen";
 import Home from "./Screens/Home";
 import MapScreen from "./Screens/MapScreen";
 import PostsScreen from "./Screens/PostsScreen";
@@ -18,12 +22,6 @@ import CommentsScreen from "./Screens/CommentsScreen";
 const Stack = createStackNavigator();
 
 export default function App() {
-  const [fontsLoaded] = useFonts({
-    JosefinSansThin: require("./assets/fonts/Josefin_Sans/static/JosefinSans-Thin.ttf"),
-    JosefinSansRegular: require("./assets/fonts/Josefin_Sans/static/JosefinSans-Regular.ttf"),
-    JosefinSansBold: require("./assets/fonts/Josefin_Sans/static/JosefinSans-Bold.ttf"),
-  });
-
   if (!fontsLoaded) {
     return null;
   }
