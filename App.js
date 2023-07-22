@@ -7,14 +7,11 @@ import "react-native-gesture-handler";
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
 
-import RegistrationScreen from "./Screens/RegistrationScreen";
-import LoginScreen from "./Screens/LoginScreen";
+import RegistrationScreen from "./Screens/auth/RegistrationScreen";
+import LoginScreen from "./Screens/auth/LoginScreen";
 import Home from "./Screens/Home";
-import MapScreen from "./Screens/MapScreen";
-import PostsScreen from "./Screens/PostsScreen";
-import CreatePostScreen from "./Screens/CreatePostScreen";
-import ProfileScreen from "./Screens/ProfileScreen";
-import CommentsScreen from "./Screens/CommentsScreen";
+import MapScreen from "./Screens/nestedScreens/MapScreen";
+import CommentsScreen from "./Screens/nestedScreens/CommentsScreen";
 
 const Stack = createStackNavigator();
 
@@ -57,44 +54,28 @@ export default function App() {
           component={MapScreen}
           options={{ title: "Location" }}
         />
-
-        {/* !!! PostsScreen, CreatePostScreen, ProfileScreen
-        - навігація через  createBottomTabNavigator ???*/}
-
-        {/* <Stack.Screen
-          name="Posts"
-          component={PostsScreen}
-          options={{
-            title: "Posts",
-            headerStyle: {
-              backgroundColor: "#f4511e",
-            },
-            headerTintColor: "#fff",
-            headerTitleStyle: {
-              fontWeight: "bold",
-              fontSize: 20,
-            },
-            headerRight: () => (
-              <Button
-                onPress={() => alert("This is a button!")}
-                title="Press me"
-                color="#fff"
-              />
-            ),
-          }}
-        />
-        <Stack.Screen
-          name="Profile"
-          component={ProfileScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="CreatePost"
-          component={CreatePostScreen}
-          options={{ title: "Create Post" }}
-        /> */}
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>
   );
 }
+
+// !==============
+// import React, { useState } from "react";
+// // Navigation
+// import { NavigationContainer } from "@react-navigation/native";
+// import { useRoute } from "./router";
+// // Custom Fonts Loader
+// import useCustomFonts from "./hooks/getCustomFonts";
+
+// export default function App() {
+//   const fontsLoaded = useCustomFonts();
+
+//   if (!fontsLoaded) {
+//     return null;
+//   }
+
+//   const routing = useRoute(null);
+
+//   return <NavigationContainer>{routing}</NavigationContainer>;
+// }

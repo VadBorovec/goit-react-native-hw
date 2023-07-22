@@ -14,42 +14,51 @@ import {
   StyleSheet,
   Platform,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
-import Background from "../assets/images/background.jpg";
+import Background from "../../assets/images/background.jpg";
+import AvatarPlaceholder from "../../assets/images/avatar-large.jpg";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
-export default function LoginScreenScreen() {
+export default function RegistrationScreen({ navigation }) {
+  const [isAvatarAdded, setIsAvatarAdded] = useState(false);
+
+  const [isLoginFocused, setIsLoginFocused] = useState(false);
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
-  const navigation = useNavigation();
-
   const initialValues = {
+    login: "",
     email: "",
     password: "",
   };
 
   const validationSchema = Yup.object().shape({
+    login: Yup.string()
+      .required("Login is required")
+      .min(3, "Login must be at least 3 characters")
+      .max(20, "Login must be at most 20 characters")
+      .matches(/^\S*$/, "Login cannot contain spaces"),
     email: Yup.string()
       .required("E-mail is required")
       .email("Invalid email address"),
     password: Yup.string()
       .required("Password is required")
-      .min(3, "Invalid password")
-      .max(20, "Invalid password")
+      .min(3, "Password must be at least 3 characters")
+      .max(20, "Password must be at most 20 characters")
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{3,}$/,
-        "Invalid password"
+        "Password must contain at least one uppercase letter, one lowercase letter, and one number"
       ),
   });
 
   const handleSubmit = (values, { resetForm }) => {
     console.log(values);
-    alert(`${values.email}, Welcome back! Login Successful! 🎉`);
-    navigation.navigate("Home");
+    alert(`🎉 Congratulations ${values.login}! Registration Successful! 🚀`);
+    navigation.navigate("Home", {
+      screen: "Posts",
+    });
     resetForm();
     setIsPasswordHidden(true);
   };
@@ -59,12 +68,25 @@ export default function LoginScreenScreen() {
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? -240 : -250}
+        keyboardVerticalOffset={Platform.OS === "ios" ? -180 : -180}
       >
         <ImageBackground style={styles.background} source={Background}>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
             <View style={styles.form}>
-              <Text style={styles.header}>Login</Text>
+              <View style={styles.avatarContainer}>
+                <Image style={styles.avatar} source={AvatarPlaceholder} />
+                <TouchableOpacity
+                  style={styles.addAvatarButton}
+                  onPress={() => setIsAvatarAdded(!isAvatarAdded)}
+                >
+                  {isAvatarAdded ? (
+                    <Feather name="x-circle" size={24} color="#BDBDBD" />
+                  ) : (
+                    <Feather name="plus-circle" size={24} color="#FF6C00" />
+                  )}
+                </TouchableOpacity>
+              </View>
+              <Text style={styles.header}>Sign up</Text>
               <View style={styles.formikWrap}>
                 <Formik
                   initialValues={initialValues}
@@ -79,6 +101,23 @@ export default function LoginScreenScreen() {
                     touched,
                   }) => (
                     <View>
+                      <View style={styles.inputWrap}>
+                        <TextInput
+                          style={[
+                            styles.input,
+                            isLoginFocused && styles.inputFocused,
+                            errors.login && touched.login && styles.inputError,
+                          ]}
+                          value={values.login}
+                          onChangeText={handleChange("login")}
+                          placeholder="Login"
+                          onFocus={() => setIsLoginFocused(true)}
+                          onBlur={() => setIsLoginFocused(false)}
+                        />
+                        {errors.login && touched.login && (
+                          <Text style={styles.errorText}>{errors.login}</Text>
+                        )}
+                      </View>
                       <View style={styles.inputWrap}>
                         <TextInput
                           style={[
@@ -145,22 +184,19 @@ export default function LoginScreenScreen() {
                       </View>
                       <TouchableOpacity
                         title="Signup"
-                        style={styles.loginButton}
+                        style={styles.registerButton}
                         onPress={handleSubmit}
                       >
-                        <Text style={styles.loginButtonText}>Login</Text>
+                        <Text style={styles.registerButtonText}>Sign up</Text>
                       </TouchableOpacity>
                     </View>
                   )}
                 </Formik>
               </View>
-
               <View style={styles.logInWrap}>
-                <Text style={styles.logInText}>Don't have an account?</Text>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("Registration")}
-                >
-                  <Text style={styles.logInLink}>Sign up</Text>
+                <Text style={styles.logInText}>Already have an account?</Text>
+                <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                  <Text style={styles.logInLink}>Login</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -190,8 +226,31 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    paddingTop: 32,
+    paddingTop: 92,
     paddingHorizontal: 16,
+  },
+  avatarContainer: {
+    position: "absolute",
+    top: -60,
+    width: 120,
+    height: 120,
+    flexShrink: 0,
+    borderRadius: 16,
+    backgroundColor: "#F6F6F6",
+  },
+  avatar: {
+    borderRadius: 16,
+  },
+  addAvatarButton: {
+    position: "absolute",
+    width: 24,
+    height: 24,
+    bottom: 14,
+    right: -12,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#FFFFFF",
   },
   header: {
     color: "#212121",
@@ -247,7 +306,7 @@ const styles = StyleSheet.create({
     bottom: 6,
     color: "#1B4371",
   },
-  loginButton: {
+  registerButton: {
     height: 51,
     alignItems: "center",
     justifyContent: "center",
@@ -255,7 +314,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     backgroundColor: "#FF6C00",
   },
-  loginButtonText: {
+  registerButtonText: {
     color: "#FFFFFF",
     fontFamily: "JosefinSansBold",
     fontSize: 16,
@@ -264,7 +323,7 @@ const styles = StyleSheet.create({
   },
   logInWrap: {
     flexDirection: "row",
-    paddingBottom: 132,
+    paddingBottom: 66,
   },
   logInText: {
     color: "#1B4371",
