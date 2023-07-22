@@ -55,8 +55,8 @@ export default function RegistrationScreen({ navigation }) {
   const handleSubmit = (values, { resetForm }) => {
     console.log(values);
     alert(`🎉 Congratulations ${values.login}! Registration Successful! 🚀`);
-    navigation.navigate("Posts", {
-      screen: "Default",
+    navigation.navigate("Home", {
+      screen: "Posts",
     });
     resetForm();
     setIsPasswordHidden(true);
