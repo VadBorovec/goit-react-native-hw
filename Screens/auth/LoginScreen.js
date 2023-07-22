@@ -13,18 +13,15 @@ import {
   StyleSheet,
   Platform,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import Background from "../../assets/images/background.jpg";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
-
-  const navigation = useNavigation();
 
   const initialValues = {
     email: "",

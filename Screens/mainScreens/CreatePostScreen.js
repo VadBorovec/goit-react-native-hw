@@ -17,8 +17,8 @@ import {
 } from "@expo/vector-icons";
 import { Camera } from "expo-camera";
 import { useNavigation } from "@react-navigation/native";
-import useCamera from "../hooks/getCamera";
-import useGetCurrentLocation from "../hooks/getLocation";
+import useCamera from "../../hooks/getCamera";
+import useGetCurrentLocation from "../../hooks/getLocation";
 
 export default function CreatePostScreen() {
   const [postTitle, setPostTitle] = useState("");

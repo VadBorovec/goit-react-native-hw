@@ -9,9 +9,9 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Feather, FontAwesome } from "@expo/vector-icons";
-import { posts, users, comments } from "../server/db";
+import { posts, users, comments } from "../../server/db";
 
-const PostsScreen = () => {
+export default function PostsScreen() {
   const [likedPosts, setLikedPosts] = useState([]);
   const navigation = useNavigation();
 
@@ -86,7 +86,7 @@ const PostsScreen = () => {
       />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -154,5 +154,3 @@ const styles = StyleSheet.create({
     paddingLeft: 6,
   },
 });
-
-export default PostsScreen;

@@ -15,9 +15,9 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
 
-import { users, posts, comments } from "../server/db";
+import { users, posts, comments } from "../../server/db";
 
-const CommentsScreen = () => {
+export default function CommentsScreen() {
   const [comment, setComment] = useState("");
   const [isCommentFocused, setIsCommentFocused] = useState(false);
   const route = useRoute();
@@ -87,7 +87,7 @@ const CommentsScreen = () => {
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -188,5 +188,3 @@ const styles = StyleSheet.create({
     bottom: 9,
   },
 });
-
-export default CommentsScreen;

@@ -1,18 +1,17 @@
 import React from "react";
 import { TouchableOpacity, View, StyleSheet } from "react-native";
+// Navigation
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+// Icons
 import { Feather } from "@expo/vector-icons";
-
-import PostsScreen from "./PostsScreen";
-import CreatePostScreen from "./CreatePostScreen";
-import ProfileScreen from "./ProfileScreen";
-import { useNavigation } from "@react-navigation/native";
+// Screens
+import PostsScreen from "./mainScreens/PostsScreen";
+import CreatePostScreen from "./mainScreens/CreatePostScreen";
+import ProfileScreen from "./mainScreens/ProfileScreen";
 
 const Tabs = createBottomTabNavigator();
 
-export default function Home() {
-  const navigation = useNavigation();
-
+export default function Home({ navigation }) {
   return (
     <Tabs.Navigator
       initialRouteName="Posts"

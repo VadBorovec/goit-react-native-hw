@@ -16,10 +16,10 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Feather, FontAwesome } from "@expo/vector-icons";
-import Background from "../assets/images/background.jpg";
-import AvatarPlaceholder from "../assets/images/avatar-large.jpg";
+import Background from "../../assets/images/background.jpg";
+import AvatarPlaceholder from "../../assets/images/avatar-large.jpg";
 
-import { posts, users, comments } from "../server/db";
+import { posts, users, comments } from "../../server/db";
 
 export default function ProfileScreen() {
   const [user, setUser] = useState(users[0]);
