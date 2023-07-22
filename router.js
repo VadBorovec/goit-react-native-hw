@@ -1,19 +1,50 @@
 import React from "react";
-import { TouchableOpacity, View, StyleSheet } from "react-native";
 // Navigation
+import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-// Icons
-import { Feather } from "@expo/vector-icons";
-// Screens
-import PostsScreen from "./mainScreens/PostsScreen";
-import CreatePostScreen from "./mainScreens/CreatePostScreen";
-import ProfileScreen from "./mainScreens/ProfileScreen";
+import "react-native-gesture-handler";
+// components
+import { Feather } from "react-native-vector-icons/Feather";
+import { TouchableOpacity } from "react-native";
+// Auth Screens
+import RegistrationScreen from "./Screens/auth/RegistrationScreen";
+import LoginScreen from "./Screens/auth/LoginScreen";
+// Main Screens
+import PostsScreen from "./Screens/mainScreens/PostsScreen";
+import CreatePostScreen from "./Screens/mainScreens/CreatePostScreen";
+import ProfileScreen from "./Screens/mainScreens/ProfileScreen";
 
-const Tabs = createBottomTabNavigator();
+const AuthStack = createStackNavigator();
+const MainTabs = createBottomTabNavigator();
 
-export default function Home({ navigation }) {
+export const useRoute = (isAuth, navigation) => {
+  if (!isAuth) {
+    // Not authenticated user can only see login and registration screens
+    console.log("Not Authenticated");
+    return (
+      <AuthStack.Navigator initialRouteName="Login">
+        <AuthStack.Screen
+          name="Registration"
+          component={RegistrationScreen}
+          options={{ headerShown: false }}
+        />
+        <AuthStack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        <AuthStack.Screen
+          name="Posts"
+          component={PostsScreen}
+          options={{ headerShown: false }}
+        />
+      </AuthStack.Navigator>
+    );
+  }
+  // If the user is already logged in, he will be directed to home screen with all other
+  console.log("Authenticated");
   return (
-    <Tabs.Navigator
+    <MainTabs.Navigator
       initialRouteName="Posts"
       screenOptions={{
         tabBarShowLabel: false,
@@ -41,7 +72,7 @@ export default function Home({ navigation }) {
         },
       }}
     >
-      <Tabs.Screen
+      <MainTabs.Screen
         name="Posts"
         component={PostsScreen}
         options={{
@@ -61,7 +92,7 @@ export default function Home({ navigation }) {
           ),
         }}
       />
-      <Tabs.Screen
+      <MainTabs.Screen
         name="CreatePost"
         component={CreatePostScreen}
         options={{
@@ -80,7 +111,7 @@ export default function Home({ navigation }) {
           ),
         }}
       />
-      <Tabs.Screen
+      <MainTabs.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
@@ -90,6 +121,6 @@ export default function Home({ navigation }) {
           ),
         }}
       />
-    </Tabs.Navigator>
+    </MainTabs.Navigator>
   );
-}
+};
