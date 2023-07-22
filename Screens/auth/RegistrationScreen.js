@@ -15,8 +15,8 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
-import Background from "../assets/images/background.jpg";
-import AvatarPlaceholder from "../assets/images/avatar-large.jpg";
+import Background from "../../assets/images/background.jpg";
+import AvatarPlaceholder from "../../assets/images/avatar-large.jpg";
 import { Formik } from "formik";
 import * as Yup from "yup";
 

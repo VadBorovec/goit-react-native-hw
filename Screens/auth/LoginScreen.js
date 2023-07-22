@@ -15,11 +15,11 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
-import Background from "../assets/images/background.jpg";
+import Background from "../../assets/images/background.jpg";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
-export default function LoginScreenScreen() {
+export default function LoginScreen() {
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
@@ -67,7 +67,7 @@ export default function LoginScreenScreen() {
               <View style={styles.formikWrap}>
                 <Formik
                   initialValues={initialValues}
-                  validationSchema={validationSchema}
+                  // validationSchema={validationSchema}
                   onSubmit={handleSubmit}
                 >
                   {({
