@@ -14,19 +14,19 @@ import {
   StyleSheet,
   Platform,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+// import { useNavigation } from "@react-navigation/native";
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import Background from "../../assets/images/background.jpg";
 import AvatarPlaceholder from "../../assets/images/avatar-large.jpg";
 
 import { posts, users, comments } from "../../server/db";
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }) {
   const [user, setUser] = useState(users[0]);
   const [isAvatarAdded, setIsAvatarAdded] = useState(false);
   const [likedPosts, setLikedPosts] = useState([]);
 
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
 
   const userPosts = posts.filter((post) => post.userId === user.userId);
 
