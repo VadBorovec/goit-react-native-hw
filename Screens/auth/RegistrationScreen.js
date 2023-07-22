@@ -13,22 +13,19 @@ import {
   StyleSheet,
   Platform,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import Background from "../../assets/images/background.jpg";
 import AvatarPlaceholder from "../../assets/images/avatar-large.jpg";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
-export default function RegistrationScreen() {
+export default function RegistrationScreen({ navigation }) {
   const [isAvatarAdded, setIsAvatarAdded] = useState(false);
 
   const [isLoginFocused, setIsLoginFocused] = useState(false);
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
-
-  const navigation = useNavigation();
 
   const initialValues = {
     login: "",

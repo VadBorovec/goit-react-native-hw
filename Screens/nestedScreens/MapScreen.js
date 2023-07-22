@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import useGetCurrentLocation from "../hooks/getLocation";
+import useGetCurrentLocation from "../../hooks/getLocation";
 
 export default function MapScreen() {
   const location = useGetCurrentLocation();

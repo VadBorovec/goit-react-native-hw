@@ -11,11 +11,11 @@ import useCustomFonts from "./hooks/getCustomFonts";
 import RegistrationScreen from "./Screens/auth/RegistrationScreen";
 import LoginScreen from "./Screens/auth/LoginScreen";
 import Home from "./Screens/Home";
-import MapScreen from "./Screens/MapScreen";
-import PostsScreen from "./Screens/PostsScreen";
-import CreatePostScreen from "./Screens/CreatePostScreen";
-import ProfileScreen from "./Screens/ProfileScreen";
-import CommentsScreen from "./Screens/CommentsScreen";
+import MapScreen from "./Screens/nestedScreens/MapScreen";
+import PostsScreen from "./Screens/mainScreens/PostsScreen";
+import CreatePostScreen from "./Screens/mainScreens/CreatePostScreen";
+import ProfileScreen from "./Screens/mainScreens/ProfileScreen";
+import CommentsScreen from "./Screens/nestedScreens/CommentsScreen";
 
 const Stack = createStackNavigator();
 
