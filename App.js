@@ -6,11 +6,11 @@ import "react-native-gesture-handler";
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
 
-import RegistrationScreen from "./Screens/RegistrationScreen";
-import LoginScreen from "./Screens/LoginScreen";
+import RegistrationScreen from "./Screens/auth/RegistrationScreen";
+import LoginScreen from "./Screens/auth/LoginScreen";
 import Home from "./Screens/Home";
-import MapScreen from "./Screens/MapScreen";
-import CommentsScreen from "./Screens/CommentsScreen";
+import MapScreen from "./Screens/nestedScreens/MapScreen";
+import CommentsScreen from "./Screens/nestedScreens/CommentsScreen";
 
 const Stack = createStackNavigator();
 
