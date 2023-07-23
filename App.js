@@ -9,7 +9,7 @@ import { StatusBar } from "expo-status-bar";
 
 import RegistrationScreen from "./Screens/auth/RegistrationScreen";
 import LoginScreen from "./Screens/auth/LoginScreen";
-import Home from "./Screens/Home";
+import Home from "./Screens/mainScreens/Home";
 import MapScreen from "./Screens/nestedScreens/MapScreen";
 import CommentsScreen from "./Screens/nestedScreens/CommentsScreen";
 
