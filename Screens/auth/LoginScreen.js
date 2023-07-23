@@ -1,3 +1,4 @@
+// test
 import React, { useState } from "react";
 import {
   ScrollView,
@@ -45,8 +46,8 @@ export default function LoginScreen({ navigation }) {
   const handleSubmit = (values, { resetForm }) => {
     console.log(values);
     alert(`${values.email}, Welcome back! Login Successful! 🎉`);
-    navigation.navigate("Posts", {
-      screen: "Default",
+    navigation.navigate("Home", {
+      screen: "Posts",
     });
     resetForm();
     setIsPasswordHidden(true);
@@ -66,7 +67,7 @@ export default function LoginScreen({ navigation }) {
               <View style={styles.formikWrap}>
                 <Formik
                   initialValues={initialValues}
-                  // validationSchema={validationSchema}
+                  validationSchema={validationSchema}
                   onSubmit={handleSubmit}
                 >
                   {({
