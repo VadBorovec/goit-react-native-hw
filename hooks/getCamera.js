@@ -13,6 +13,10 @@ export default function useCamera() {
       const { status } = await Camera.requestCameraPermissionsAsync();
       await MediaLibrary.requestPermissionsAsync();
 
+      if (status !== "granted") {
+        console.log("Permission to access camera was denied");
+        return;
+      }
       setHasPermission(status === "granted");
     })();
   }, []);
