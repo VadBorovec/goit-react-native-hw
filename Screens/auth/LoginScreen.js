@@ -66,7 +66,7 @@ export default function LoginScreen({ navigation }) {
               <View style={styles.formikWrap}>
                 <Formik
                   initialValues={initialValues}
-                  validationSchema={validationSchema}
+                  // validationSchema={validationSchema}
                   onSubmit={handleSubmit}
                 >
                   {({
