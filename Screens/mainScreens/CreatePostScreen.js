@@ -48,14 +48,28 @@ export default function CreatePostScreen() {
   } = useCamera();
   const { selectedImage, setSelectedImage, uploadPhoto } = useUploadPhoto();
 
-  const handleTakePhoto = () => {
-    takePhoto();
-    setIsPhotoTaken(true);
+  const handleTakePhoto = async () => {
+    try {
+      const uri = await takePhoto(); // Await the photo URI
+      console.log("handleTakePhoto uri >", uri);
+      setPhotoUri(uri); // Update the photoUri state with the URI
+      setSelectedImage(uri); // Update the selectedImage state with the URI
+      setIsPhotoTaken(true); // Update the isPhotoTaken state
+    } catch (error) {
+      console.log("Error taking photo:", error);
+    }
   };
 
-  const handleUploadPhoto = () => {
-    uploadPhoto();
-    setPhotoUri(selectedImage);
+  const handleUploadPhoto = async () => {
+    try {
+      const uri = await uploadPhoto(); // Await the photo URI
+      console.log("handleUploadPhoto uri >", uri);
+      setPhotoUri(uri); // Update the photoUri state with the URI
+      setSelectedImage(uri); // Update the selectedImage state with the URI
+      setIsPhotoTaken(true); // Update the isPhotoTaken state
+    } catch (error) {
+      console.log("Error uploading photo:", error);
+    }
   };
 
   const handleSubmit = () => {
@@ -70,6 +84,7 @@ export default function CreatePostScreen() {
     }
 
     console.log(`
+    selectedImg - ${selectedImage};
       uri - ${photoUri};
       title - ${postTitle};
       location - ${location};
@@ -77,14 +92,15 @@ export default function CreatePostScreen() {
       isPhotoTaken - ${isPhotoTaken};
       `);
     alert("✅ Post published successfully! 🎉");
+    navigation.navigate("Home", {
+      screen: "Posts",
+      params: { selectedImage, postTitle, location, geolocation },
+    });
     setPhotoUri(null);
     setPostTitle("");
     setGeolocation("");
     setIsPhotoTaken(false);
     setSelectedImage(null);
-    navigation.navigate("Home", {
-      screen: "Posts",
-    });
   };
 
   const handleDelete = () => {
@@ -258,7 +274,7 @@ const styles = StyleSheet.create({
     position: "relative",
     alignItems: "center",
     justifyContent: "center",
-    height: 200,
+    height: 240,
     borderRadius: 8,
     backgroundColor: "transparent",
   },

@@ -15,6 +15,8 @@ export default function useUploadPhoto() {
 
       if (!result.canceled && result.assets.length > 0) {
         setSelectedImage(result.assets[0].uri);
+
+        return result.assets[0].uri;
       }
     } catch (error) {
       console.log("Error selecting image:", error);
