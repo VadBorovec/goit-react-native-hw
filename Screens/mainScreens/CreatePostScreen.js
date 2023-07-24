@@ -20,10 +20,11 @@ import {
 } from "@expo/vector-icons";
 // Navigation
 import { useNavigation } from "@react-navigation/native";
+// Image picker
+import * as ImagePicker from "expo-image-picker";
 // Camera
 import { Camera } from "expo-camera";
 import useCamera from "../../hooks/getCamera";
-
 // Location
 import useGetCurrentLocation from "../../hooks/getLocation";
 
@@ -33,7 +34,7 @@ export default function CreatePostScreen() {
   const [geolocation, setGeolocation] = useState("");
   const [isGeolocationFocused, setIsGeolocationFocused] = useState(false);
   const [isPhotoTaken, setIsPhotoTaken] = useState(false);
-
+  const [selectedImage, setSelectedImage] = useState(null);
   const navigation = useNavigation();
   const location = useGetCurrentLocation();
   const {
@@ -52,8 +53,26 @@ export default function CreatePostScreen() {
     console.log(`location - ${location};`);
   };
 
+  const handleChoosePhoto = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+
+      if (!result.cancelled) {
+        setSelectedImage(result.uri);
+        setPhotoUri(result.uri);
+      }
+    } catch (error) {
+      console.log("Error selecting image:", error);
+    }
+  };
+
   const handleSubmit = () => {
-    if (!isPhotoTaken) {
+    if (!isPhotoTaken && !selectedImage) {
       alert("Previously make a shot");
       return;
     }
@@ -75,6 +94,7 @@ export default function CreatePostScreen() {
     setPostTitle("");
     setGeolocation("");
     setIsPhotoTaken(false);
+    setSelectedImage(null);
     navigation.navigate("Home", {
       screen: "Posts",
     });
@@ -87,6 +107,7 @@ export default function CreatePostScreen() {
     setPostTitle("");
     setGeolocation("");
     setIsPhotoTaken(false);
+    setSelectedImage(null);
   };
 
   return (
@@ -119,36 +140,53 @@ export default function CreatePostScreen() {
                   <Image style={styles.image} source={{ uri: photoUri }} />
                 ) : (
                   <>
-                    <TouchableOpacity
-                      style={styles.flipContainer}
-                      onPress={handleCameraFlip}
-                    >
-                      <MaterialCommunityIcons
-                        name="camera-flip"
-                        size={30}
-                        color="#FFF"
+                    {selectedImage ? (
+                      <Image
+                        source={{ uri: selectedImage }}
+                        style={styles.image}
                       />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.ellipse}
-                      onPress={handleTakePhoto}
-                    >
-                      <FontAwesome name="camera" size={30} color="#FFF" />
-                    </TouchableOpacity>
+                    ) : (
+                      <>
+                        <TouchableOpacity
+                          style={styles.flipContainer}
+                          onPress={handleCameraFlip}
+                        >
+                          <MaterialCommunityIcons
+                            name="camera-flip"
+                            size={30}
+                            color="#FFF"
+                          />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={styles.ellipse}
+                          onPress={handleTakePhoto}
+                        >
+                          <FontAwesome name="camera" size={30} color="#FFF" />
+                        </TouchableOpacity>
+                      </>
+                    )}
                   </>
                 )}
               </View>
             </Camera>
           )}
 
-          {isPhotoTaken ? (
-            <View style={styles.titleWrapper}>
-              <Text style={styles.title}>Edit Photo</Text>
-            </View>
+          {isPhotoTaken || selectedImage ? (
+            <TouchableOpacity
+              style={styles.choosePhotoButton}
+              onPress={handleChoosePhoto}
+            >
+              <Text style={styles.choosePhotoButtonText}>Edit Photo</Text>
+            </TouchableOpacity>
           ) : (
-            <View style={styles.titleWrapper}>
-              <Text style={styles.title}>Upload Photo</Text>
-            </View>
+            <TouchableOpacity
+              style={styles.choosePhotoButton}
+              onPress={handleChoosePhoto}
+            >
+              <Text style={styles.choosePhotoButtonText}>
+                Upload from Gallery
+              </Text>
+            </TouchableOpacity>
           )}
 
           <View style={styles.inputWrapper}>
@@ -203,7 +241,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   camera: {
-    marginBottom: 8,
+    marginBottom: 20,
   },
   noAccesView: {
     alignItems: "center",
@@ -256,12 +294,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  titleWrapper: {
-    marginBottom: 32,
+  choosePhotoButton: {
+    height: 51,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 32,
+    borderRadius: 100,
+    borderWidth: 2,
+    borderColor: "#FF6C00",
+    marginBottom: 20,
   },
-  title: {
-    paddingLeft: 8,
-    color: "#BDBDBD",
+  choosePhotoButtonText: {
+    color: "#FF6C00",
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "bold",
   },
   wrapper: {
     justifyContent: "space-between",
