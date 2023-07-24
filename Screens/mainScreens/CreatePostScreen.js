@@ -20,11 +20,11 @@ import {
 } from "@expo/vector-icons";
 // Navigation
 import { useNavigation } from "@react-navigation/native";
-// Image picker
-import * as ImagePicker from "expo-image-picker";
 // Camera
 import { Camera } from "expo-camera";
 import useCamera from "../../hooks/getCamera";
+// Upload photo
+import useUploadPhoto from "../../hooks/getUploadPhoto";
 // Location
 import useGetCurrentLocation from "../../hooks/getLocation";
 
@@ -34,7 +34,7 @@ export default function CreatePostScreen() {
   const [geolocation, setGeolocation] = useState("");
   const [isGeolocationFocused, setIsGeolocationFocused] = useState(false);
   const [isPhotoTaken, setIsPhotoTaken] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+
   const navigation = useNavigation();
   const location = useGetCurrentLocation();
   const {
@@ -46,29 +46,16 @@ export default function CreatePostScreen() {
     photoUri,
     setPhotoUri,
   } = useCamera();
+  const { selectedImage, setSelectedImage, uploadPhoto } = useUploadPhoto();
 
   const handleTakePhoto = () => {
     takePhoto();
     setIsPhotoTaken(true);
-    console.log(`location - ${location};`);
   };
 
-  const handleChoosePhoto = async () => {
-    try {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
-
-      if (!result.cancelled) {
-        setSelectedImage(result.uri);
-        setPhotoUri(result.uri);
-      }
-    } catch (error) {
-      console.log("Error selecting image:", error);
-    }
+  const handleUploadPhoto = () => {
+    uploadPhoto();
+    setPhotoUri(selectedImage);
   };
 
   const handleSubmit = () => {
@@ -174,14 +161,14 @@ export default function CreatePostScreen() {
           {isPhotoTaken || selectedImage ? (
             <TouchableOpacity
               style={styles.choosePhotoButton}
-              onPress={handleChoosePhoto}
+              onPress={handleUploadPhoto}
             >
               <Text style={styles.choosePhotoButtonText}>Edit Photo</Text>
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
               style={styles.choosePhotoButton}
-              onPress={handleChoosePhoto}
+              onPress={handleUploadPhoto}
             >
               <Text style={styles.choosePhotoButtonText}>
                 Upload from Gallery
