@@ -8,12 +8,15 @@ import {
   StyleSheet,
 } from "react-native";
 // import { useNavigation } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import { posts, users, comments } from "../../server/db";
 
 export default function PostsScreen({ navigation }) {
   const [likedPosts, setLikedPosts] = useState([]);
   // const navigation = useNavigation();
+  const route = useRoute(); // Access the route object
+  const { selectedImage, postTitle, geolocation } = route.params || {}; // Extract the parameters
 
   const toggleLike = (postId) => {
     setLikedPosts((prevLikedPosts) => {
@@ -33,6 +36,45 @@ export default function PostsScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      {selectedImage && (
+        <View style={styles.postContainer}>
+          <View style={styles.userInfoContainer}>
+            <Image source={users[0].avatarImg} style={styles.avatar} />
+
+            <View style={styles.userInfo}>
+              <Text style={styles.login}>{users[0].login}</Text>
+              <Text style={styles.email}>{users[0].email}</Text>
+            </View>
+          </View>
+          <Image source={{ uri: selectedImage }} style={styles.postImage} />
+          <Text style={styles.title}>{postTitle}</Text>
+          <View style={styles.infoContainer}>
+            <View style={styles.iconsContainer}>
+              <TouchableOpacity
+                style={styles.iconRow}
+                onPress={() => handleCommentsPress(comments[0])}
+              >
+                <Feather name="message-circle" size={24} color="#FF6C00" />
+                <Text style={styles.infoText}>{comments[0].length}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => toggleLike(posts[0].postId)}>
+                <View style={styles.iconRow}>
+                  <Feather name="heart" size={24} color="#FF6C00" />
+
+                  <Text style={styles.infoText}>0</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity onPress={() => navigation.navigate("Map")}>
+              <View style={styles.iconRow}>
+                <Feather name="map-pin" size={24} color="#BDBDBD" />
+                <Text style={styles.locationText}>{geolocation}</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+
       <FlatList
         data={posts}
         keyExtractor={(item) => item.postId.toString()}
@@ -46,6 +88,7 @@ export default function PostsScreen({ navigation }) {
             <View style={styles.postContainer}>
               <View style={styles.userInfoContainer}>
                 <Image source={user.avatarImg} style={styles.avatar} />
+
                 <View style={styles.userInfo}>
                   <Text style={styles.login}>{user.login}</Text>
                   <Text style={styles.email}>{user.email}</Text>

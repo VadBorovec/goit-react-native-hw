@@ -34,6 +34,8 @@ export default function useCamera() {
       const { uri } = await cameraRef.takePictureAsync();
       await MediaLibrary.createAssetAsync(uri);
       setPhotoUri(uri);
+
+      return uri;
     }
   };
 

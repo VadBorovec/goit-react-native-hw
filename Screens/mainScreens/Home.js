@@ -45,6 +45,11 @@ export default function Home() {
       <Tabs.Screen
         name="Posts"
         component={PostsScreen}
+        initialParams={{
+          selectedImage: null,
+          postTitle: "Post title",
+          geolocation: "Somewhere",
+        }} // Set an initial value for photoUri
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <Feather name="grid" color={color} size={size} />
