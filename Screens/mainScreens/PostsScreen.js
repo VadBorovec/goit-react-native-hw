@@ -7,16 +7,15 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-// import { useNavigation } from "@react-navigation/native";
-import { useRoute } from "@react-navigation/native";
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import { posts, users, comments } from "../../server/db";
 
 export default function PostsScreen({ navigation }) {
+export default function PostsScreen({ navigation, route }) {
+  // const [posts, setPosts] = useState([]);
   const [likedPosts, setLikedPosts] = useState([]);
-  // const navigation = useNavigation();
-  const route = useRoute(); // Access the route object
-  const { selectedImage, postTitle, geolocation } = route.params || {}; // Extract the parameters
+  const { selectedImage, postTitle, location, geolocation } =
+    route.params || {}; // Extract the parameters
 
   const toggleLike = (postId) => {
     setLikedPosts((prevLikedPosts) => {
