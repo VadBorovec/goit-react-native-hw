@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,17 +7,29 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-// import { useNavigation } from "@react-navigation/native";
-import { useRoute } from "@react-navigation/native";
 import { Feather, FontAwesome } from "@expo/vector-icons";
+//* for FlatList from db.jsx file
 import { posts, users, comments } from "../../server/db";
 
-export default function PostsScreen({ navigation }) {
-  const [likedPosts, setLikedPosts] = useState([]);
-  // const navigation = useNavigation();
-  const route = useRoute(); // Access the route object
-  const { selectedImage, postTitle, geolocation } = route.params || {}; // Extract the parameters
+export default function PostsScreen({ navigation, route }) {
+  //* start features for FlatList from CreatePost
+  const [photos, setPhotos] = useState([]);
 
+  // ! useEffect Спрацьовує на кожному повернені на даний скрін, навіть якщо route.params не змінювались
+  // ? Чому? не можу поки розібратись
+  useEffect(() => {
+    if (route.params) {
+      setPhotos((prevPhotos) => [...prevPhotos, route.params]);
+    }
+  }, [route.params]);
+  console.log("route.params ->", route.params);
+  //* end features for FlatList from CreatePost
+
+  //* start features for  FlatList from db.jsx file
+  const [likedPosts, setLikedPosts] = useState([]);
+  const { selectedImage, postTitle, location, geolocation } =
+    route.params || {}; // Extract the parameters
+  // temporary func for toggle like
   const toggleLike = (postId) => {
     setLikedPosts((prevLikedPosts) => {
       if (prevLikedPosts.includes(postId)) {
@@ -29,52 +41,64 @@ export default function PostsScreen({ navigation }) {
       }
     });
   };
-
   const handleCommentsPress = (post) => {
     navigation.navigate("Comments", { post });
   };
+  //* end features for  FlatList from db.jsx file
 
   return (
     <View style={styles.container}>
-      {selectedImage && (
-        <View style={styles.postContainer}>
-          <View style={styles.userInfoContainer}>
-            <Image source={users[0].avatarImg} style={styles.avatar} />
+      {/* start of temporary FlatList from CreatePost */}
+      {photos.length < 1 ? null : (
+        <FlatList
+          data={photos}
+          keyExtractor={(item, indx) => indx.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.postContainer}>
+              {/* "userInfoContainer"  view is static pro tempore */}
+              <View style={styles.userInfoContainer}>
+                <Image source={users[0].avatarImg} style={styles.avatar} />
 
-            <View style={styles.userInfo}>
-              <Text style={styles.login}>{users[0].login}</Text>
-              <Text style={styles.email}>{users[0].email}</Text>
-            </View>
-          </View>
-          <Image source={{ uri: selectedImage }} style={styles.postImage} />
-          <Text style={styles.title}>{postTitle}</Text>
-          <View style={styles.infoContainer}>
-            <View style={styles.iconsContainer}>
-              <TouchableOpacity
-                style={styles.iconRow}
-                onPress={() => handleCommentsPress(comments[0])}
-              >
-                <Feather name="message-circle" size={24} color="#FF6C00" />
-                <Text style={styles.infoText}>{comments[0].length}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => toggleLike(posts[0].postId)}>
-                <View style={styles.iconRow}>
-                  <Feather name="heart" size={24} color="#FF6C00" />
-
-                  <Text style={styles.infoText}>0</Text>
+                <View style={styles.userInfo}>
+                  <Text style={styles.login}>{users[0].login}</Text>
+                  <Text style={styles.email}>{users[0].email}</Text>
                 </View>
-              </TouchableOpacity>
-            </View>
-            <TouchableOpacity onPress={() => navigation.navigate("Map")}>
-              <View style={styles.iconRow}>
-                <Feather name="map-pin" size={24} color="#BDBDBD" />
-                <Text style={styles.locationText}>{geolocation}</Text>
               </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
+              <Image
+                source={{ uri: item.selectedImage }}
+                style={styles.postImage}
+              />
+              <Text style={styles.title}>{item.postTitle}</Text>
+              <View style={styles.infoContainer}>
+                <View style={styles.iconsContainer}>
+                  <TouchableOpacity
+                    style={styles.iconRow}
+                    onPress={() => handleCommentsPress(comments[0])}
+                  >
+                    <Feather name="message-circle" size={24} color="#FF6C00" />
+                    <Text style={styles.infoText}>{comments[0].length}</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => toggleLike(posts[0].postId)}>
+                    <View style={styles.iconRow}>
+                      <Feather name="heart" size={24} color="#FF6C00" />
 
+                      <Text style={styles.infoText}>0</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                <TouchableOpacity onPress={() => navigation.navigate("Map")}>
+                  <View style={styles.iconRow}>
+                    <Feather name="map-pin" size={24} color="#BDBDBD" />
+                    <Text style={styles.locationText}>{item.geolocation}</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+        />
+      )}
+      {/* end of temporary FlatList from CreatePost */}
+      {/* start of temporary FlatList from db.jsx file */}
       <FlatList
         data={posts}
         keyExtractor={(item) => item.postId.toString()}
@@ -127,6 +151,7 @@ export default function PostsScreen({ navigation }) {
           );
         }}
       />
+      {/* end of temporary FlatList from db.jsx file */}
     </View>
   );
 }
