@@ -19,7 +19,7 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 // Navigation
-import { useNavigation } from "@react-navigation/native";
+// import { useNavigation } from "@react-navigation/native";
 // Camera
 import { Camera } from "expo-camera";
 import useCamera from "../../hooks/getCamera";
@@ -28,14 +28,14 @@ import useUploadPhoto from "../../hooks/getUploadPhoto";
 // Location
 import useGetCurrentLocation from "../../hooks/getLocation";
 
-export default function CreatePostScreen() {
+export default function CreatePostScreen({ navigation }) {
   const [postTitle, setPostTitle] = useState("");
   const [isTitleFocused, setIsTitleFocused] = useState(false);
   const [geolocation, setGeolocation] = useState("");
   const [isGeolocationFocused, setIsGeolocationFocused] = useState(false);
   const [isPhotoTaken, setIsPhotoTaken] = useState(false);
 
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   const location = useGetCurrentLocation();
   const {
     hasPermission,
