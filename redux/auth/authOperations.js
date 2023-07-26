@@ -19,17 +19,16 @@ const register = createAsyncThunk(
         email,
         password
       );
-      await updateProfile(auth.currentUser, {
-        displayName: username,
-      });
+      await updateProfile(user, { displayName: username });
+
       return user;
     } catch (error) {
       console.log(error);
-      Alert.alert(error.message);
-      return;
+      throw error;
     }
   }
 );
+
 const login = createAsyncThunk("auth/login", async ({ email, password }) => {
   try {
     const { user } = await signInWithEmailAndPassword(auth, email, password);
@@ -37,19 +36,31 @@ const login = createAsyncThunk("auth/login", async ({ email, password }) => {
     return user;
   } catch (error) {
     console.log(error);
-    Alert.alert(error.message);
-    return;
+    throw error;
   }
 });
+
 const logout = createAsyncThunk("auth/logout", async () => {
   try {
     await signOut(auth);
-    Alert.alert("You have been logged out");
-    return;
   } catch (error) {
     console.log(error);
-    Alert.alert(error.message);
-    return;
+    throw error;
+  }
+});
+
+const refreshUser = createAsyncThunk("auth/refreshUser", async () => {
+  try {
+    const user = await new Promise((resolve) => {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        unsubscribe(); // Unsubscribe after getting the user once
+        resolve(user);
+      });
+    });
+    return user;
+  } catch (error) {
+    console.log(error);
+    throw error;
   }
 });
 
@@ -57,4 +68,5 @@ export const authOperations = {
   register,
   login,
   logout,
+  refreshUser,
 };
