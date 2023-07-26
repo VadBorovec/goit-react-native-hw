@@ -18,8 +18,11 @@ const firebaseConfig = {
   measurementId: "G-measurement-id", //
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+// Initialize Firebase Authentication and get a reference to the service
 export const auth = getAuth(app);
+
 export const db = getFirestore(app);
 export const storage = getStorage(app);
