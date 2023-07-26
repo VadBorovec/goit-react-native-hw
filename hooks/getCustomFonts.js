@@ -19,5 +19,6 @@ export default function useCustomFonts() {
 
   return {
     fontsLoaded,
+    setFontsLoaded,
   };
 }
