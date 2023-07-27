@@ -19,6 +19,9 @@ import AvatarPlaceholder from "../../assets/images/avatar-large.jpg";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
+import { useDispatch } from "react-redux";
+import { authOperations } from "../../redux/auth/authOperations";
+
 export default function RegistrationScreen({ navigation }) {
   const [isAvatarAdded, setIsAvatarAdded] = useState(false);
 
@@ -26,6 +29,8 @@ export default function RegistrationScreen({ navigation }) {
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+
+  const dispatch = useDispatch();
 
   const initialValues = {
     login: "",
@@ -55,11 +60,12 @@ export default function RegistrationScreen({ navigation }) {
   const handleSubmit = (values, { resetForm }) => {
     console.log(values);
     alert(`🎉 Congratulations ${values.login}! Registration Successful! 🚀`);
+    resetForm();
+    setIsPasswordHidden(true);
+    dispatch(authOperations.register(values));
     navigation.navigate("Home", {
       screen: "Posts",
     });
-    resetForm();
-    setIsPasswordHidden(true);
   };
 
   return (
@@ -89,7 +95,7 @@ export default function RegistrationScreen({ navigation }) {
               <View style={styles.formikWrap}>
                 <Formik
                   initialValues={initialValues}
-                  validationSchema={validationSchema}
+                  // validationSchema={validationSchema}
                   onSubmit={handleSubmit}
                 >
                   {({

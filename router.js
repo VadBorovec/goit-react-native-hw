@@ -4,20 +4,20 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import "react-native-gesture-handler";
 // components
-import { Feather } from "react-native-vector-icons/Feather";
+import { Feather } from "react-native-vector-icons";
 import { TouchableOpacity } from "react-native";
 // Auth Screens
 import RegistrationScreen from "./Screens/auth/RegistrationScreen";
 import LoginScreen from "./Screens/auth/LoginScreen";
 // Main Screens
-import PostsScreen from "./Screens/mainScreens/PostsScreen";
+import Home from "./Screens/mainScreens/Home";
 import CreatePostScreen from "./Screens/mainScreens/CreatePostScreen";
 import ProfileScreen from "./Screens/mainScreens/ProfileScreen";
 
 const AuthStack = createStackNavigator();
-const MainTabs = createBottomTabNavigator();
+const MainTab = createBottomTabNavigator();
 
-export const useRoute = (isAuth, navigation) => {
+export const useRoute = (isAuth, handleAuthSuccess, navigation) => {
   if (!isAuth) {
     // Not authenticated user can only see login and registration screens
     console.log("Not Authenticated");
@@ -33,19 +33,15 @@ export const useRoute = (isAuth, navigation) => {
           component={LoginScreen}
           options={{ headerShown: false }}
         />
-        <AuthStack.Screen
-          name="Posts"
-          component={PostsScreen}
-          options={{ headerShown: false }}
-        />
       </AuthStack.Navigator>
     );
   }
   // If the user is already logged in, he will be directed to home screen with all other
   console.log("Authenticated");
+
   return (
-    <MainTabs.Navigator
-      initialRouteName="Posts"
+    <MainTab.Navigator
+      initialRouteName="Home"
       screenOptions={{
         tabBarShowLabel: false,
         tabBarActiveTintColor: "#FFFFFF",
@@ -72,12 +68,10 @@ export const useRoute = (isAuth, navigation) => {
         },
       }}
     >
-      <MainTabs.Screen
-        name="Posts"
-        component={PostsScreen}
+      <MainTab.Screen
         options={{
-          tabBarIcon: ({ focused, color, size }) => (
-            <Feather name="grid" color={color} size={size} />
+          tabBarIcon: ({ focused, size, color }) => (
+            <Feather name="grid" size={size} color={color} />
           ),
           headerRight: () => (
             <TouchableOpacity
@@ -91,36 +85,28 @@ export const useRoute = (isAuth, navigation) => {
             </TouchableOpacity>
           ),
         }}
+        name="Posts"
+        component={Home}
       />
-      <MainTabs.Screen
+      <MainTab.Screen
+        options={{
+          tabBarIcon: ({ focused, size, color }) => (
+            <Feather name="plus" size={size} color={color} />
+          ),
+        }}
         name="CreatePost"
         component={CreatePostScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Feather name="plus" color={color} size={size} />
-          ),
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => {
-                console.log("Press Back Button");
-                navigation.navigate("Posts");
-              }}
-            >
-              <Feather name="arrow-left" color={"#212121"} size={24} />
-            </TouchableOpacity>
-          ),
-        }}
       />
-      <MainTabs.Screen
-        name="Profile"
-        component={ProfileScreen}
+      <MainTab.Screen
         options={{
           headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Feather name="user" color={color} size={size} />
+          tabBarIcon: ({ focused, size, color }) => (
+            <Feather name="user" size={size} color={color} />
           ),
         }}
+        name="Profile"
+        component={ProfileScreen}
       />
-    </MainTabs.Navigator>
+    </MainTab.Navigator>
   );
 };
