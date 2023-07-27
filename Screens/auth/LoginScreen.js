@@ -18,10 +18,15 @@ import Background from "../../assets/images/background.jpg";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
+import { useDispatch } from "react-redux";
+import { authOperations } from "../../redux/auth/authOperations";
+
 export default function LoginScreen({ navigation, handleAuthSuccess }) {
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+
+  const dispatch = useDispatch();
 
   const initialValues = {
     email: "",
@@ -47,6 +52,8 @@ export default function LoginScreen({ navigation, handleAuthSuccess }) {
     alert(`${values.email}, Welcome back! Login Successful! 🎉`);
     resetForm();
     setIsPasswordHidden(true);
+
+    dispatch(authOperations.login(values));
     // navigation.navigate("Home");
     handleAuthSuccess();
   };
