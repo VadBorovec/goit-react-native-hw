@@ -54,9 +54,9 @@ import { authOperations } from "./authOperations";
 
 const initialState = {
   user: {
-    uid: null,
-    name: "Please enter your name",
-    email: "null",
+    userId: null,
+    login: null,
+    email: null,
     posts: [],
   },
   token: "null",
@@ -71,20 +71,20 @@ export const authSlice = createSlice({
     [authOperations.register.fulfilled](state, action) {
       state.user.email = action.payload.email;
       state.token = action.payload.accessToken;
-      state.user.name = action.payload.displayName;
-      state.user.uid = action.payload.uid;
+      state.user.login = action.payload.displayName;
+      state.user.userId = action.payload.userId;
       state.isLoggedIn = true;
     },
     [authOperations.login.fulfilled](state, action) {
       state.user.email = action.payload.email;
-      state.user.name = action.payload.displayName;
+      state.user.login = action.payload.displayName;
       state.token = action.payload.accessToken;
-      state.user.uid = action.payload.uid;
+      state.user.userId = action.payload.userId;
       state.isLoggedIn = true;
     },
     [authOperations.logout.fulfilled](state, action) {
       state.user = {
-        name: null,
+        login: null,
         email: null,
       };
       state.token = null;
@@ -94,10 +94,10 @@ export const authSlice = createSlice({
 });
 
 const selectIsLoggedIn = (state) => state.auth.isLoggedIn;
-const selectUsername = (state) => state.auth.user.name;
+const selectUsername = (state) => state.auth.user.login;
 const selectIsRefreshing = (state) => state.auth.isRefreshing;
 const selectUserEmail = (state) => state.auth.user.email;
-const selectUserUid = (state) => state.auth.user.uid;
+const selectUserUserId = (state) => state.auth.user.userId;
 const selectUserPosts = (state) => state.auth.user.posts;
 
 export const authSelectors = {
@@ -106,5 +106,5 @@ export const authSelectors = {
   selectIsRefreshing,
   selectUserEmail,
   selectUserPosts,
-  selectUserUid,
+  selectUserUserId,
 };

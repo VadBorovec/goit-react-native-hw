@@ -75,17 +75,17 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   createUserWithEmailAndPassword,
-  onAuthStateChanged,
   signInWithEmailAndPassword,
-  signOut,
+  onAuthStateChanged,
   updateProfile,
+  signOut,
 } from "firebase/auth";
 import { Alert } from "react-native";
 import { auth } from "../../firebase/config";
 
 const register = createAsyncThunk(
   "auth/register",
-  async ({ email, password, username }) => {
+  async ({ email, password, login }) => {
     try {
       const { user } = await createUserWithEmailAndPassword(
         auth,
@@ -93,7 +93,7 @@ const register = createAsyncThunk(
         password
       );
       await updateProfile(auth.currentUser, {
-        displayName: username,
+        displayName: login,
       });
       return user;
     } catch (error) {

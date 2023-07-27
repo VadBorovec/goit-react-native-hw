@@ -13,6 +13,11 @@ import { persistor, store } from "./redux/store";
 
 export default function App() {
   const { fontsLoaded } = useCustomFonts();
+  // const [isAuth, setIsAuth] = useState(false);
+
+  const handleAuthSuccess = () => {
+    setIsAuth(true);
+  };
 
   const routing = useRoute(false);
 

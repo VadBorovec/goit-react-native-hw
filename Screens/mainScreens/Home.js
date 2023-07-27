@@ -1,5 +1,5 @@
 import React from "react";
-import { moduleName } from "react-native";
+// import { moduleName } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 // Nested Screens
 import PostsScreen from "../nestedScreens/PostsScreen";

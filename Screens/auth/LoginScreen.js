@@ -18,7 +18,7 @@ import Background from "../../assets/images/background.jpg";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen({ navigation, handleAuthSuccess }) {
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
@@ -45,9 +45,10 @@ export default function LoginScreen({ navigation }) {
   const handleSubmit = (values, { resetForm }) => {
     console.log(values);
     alert(`${values.email}, Welcome back! Login Successful! 🎉`);
-    navigation.navigate("Home");
     resetForm();
     setIsPasswordHidden(true);
+    // navigation.navigate("Home");
+    handleAuthSuccess();
   };
 
   return (

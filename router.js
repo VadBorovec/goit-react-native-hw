@@ -17,7 +17,7 @@ import ProfileScreen from "./Screens/mainScreens/ProfileScreen";
 const AuthStack = createStackNavigator();
 const MainTab = createBottomTabNavigator();
 
-export const useRoute = (isAuth, navigation) => {
+export const useRoute = (isAuth, handleAuthSuccess, navigation) => {
   if (!isAuth) {
     // Not authenticated user can only see login and registration screens
     console.log("Not Authenticated");
