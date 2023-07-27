@@ -92,8 +92,7 @@ export default function CreatePostScreen({ navigation }) {
       isPhotoTaken - ${isPhotoTaken};
       `);
     alert("✅ Post published successfully! 🎉");
-    navigation.navigate("Home", {
-      screen: "Posts",
+    navigation.navigate("Posts", {
       params: { selectedImage, postTitle, location, geolocation },
     });
     setPhotoUri(null);

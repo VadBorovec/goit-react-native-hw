@@ -73,7 +73,6 @@
 
 // !=================
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { auth } from "../../firebase/config";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -82,6 +81,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { Alert } from "react-native";
+import { auth } from "../../firebase/config";
 
 const register = createAsyncThunk(
   "auth/register",
