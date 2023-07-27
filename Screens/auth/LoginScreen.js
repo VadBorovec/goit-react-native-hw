@@ -17,7 +17,7 @@ import { Feather } from "@expo/vector-icons";
 import Background from "../../assets/images/background.jpg";
 import { Formik } from "formik";
 import * as Yup from "yup";
-
+// for submit
 import { useDispatch } from "react-redux";
 import { authOperations } from "../../redux/auth/authOperations";
 
@@ -53,9 +53,9 @@ export default function LoginScreen({ navigation, handleAuthSuccess }) {
     resetForm();
     setIsPasswordHidden(true);
 
-    dispatch(authOperations.login(values));
+    // dispatch(authOperations.login(values));
     // navigation.navigate("Home");
-    handleAuthSuccess();
+    dispatch(login(values));
   };
 
   return (

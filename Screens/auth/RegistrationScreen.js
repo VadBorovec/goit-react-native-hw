@@ -18,7 +18,7 @@ import Background from "../../assets/images/background.jpg";
 import AvatarPlaceholder from "../../assets/images/avatar-large.jpg";
 import { Formik } from "formik";
 import * as Yup from "yup";
-
+// for submit
 import { useDispatch } from "react-redux";
 import { authOperations } from "../../redux/auth/authOperations";
 
@@ -62,10 +62,11 @@ export default function RegistrationScreen({ navigation }) {
     alert(`🎉 Congratulations ${values.login}! Registration Successful! 🚀`);
     resetForm();
     setIsPasswordHidden(true);
-    dispatch(authOperations.register(values));
-    navigation.navigate("Home", {
-      screen: "Posts",
-    });
+    // dispatch(authOperations.register(values));
+    // navigation.navigate("Home", {
+    //   screen: "Posts",
+    // });
+    dispatch(register(values));
   };
 
   return (

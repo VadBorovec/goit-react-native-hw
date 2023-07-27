@@ -10,16 +10,16 @@ import { StatusBar } from "expo-status-bar";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/store";
+// firebase
+import db from "./firebase/config";
 
 export default function App() {
   const { fontsLoaded } = useCustomFonts();
-  // const [isAuth, setIsAuth] = useState(false);
+  const [user, setUser] = useState(null);
 
-  const handleAuthSuccess = () => {
-    setIsAuth(true);
-  };
+  db.auth().onAuthStateChanged((user) => setUser(user));
 
-  const routing = useRoute(false);
+  const routing = useRoute(user);
 
   if (!fontsLoaded) {
     return null;
