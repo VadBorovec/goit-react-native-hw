@@ -13,6 +13,6 @@
 9. Додати логіку завантаження постів у базу даних, використовуючи `Firebase` та `Redux`
 10. Додати логіку додавання коментаря під постом, використовуючи `Firebase` та `Redux`
 
-##
+## Mockup
 
 [Макет проекту ТУТ](<https://www.figma.com/file/YqWLNarVE4x1zkXa6PYJfi/Homework-(Copy)-(Copy)>)
