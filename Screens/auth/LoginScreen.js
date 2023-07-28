@@ -47,15 +47,21 @@ export default function LoginScreen({ navigation, handleAuthSuccess }) {
       ),
   });
 
-  const handleSubmit = (values, { resetForm }) => {
+  const handleSubmit = async (values, { resetForm }) => {
     console.log(values);
-    alert(`${values.email}, Welcome back! Login Successful! 🎉`);
     resetForm();
     setIsPasswordHidden(true);
+    const { email, password } = values;
 
-    // dispatch(authOperations.login(values));
     // navigation.navigate("Home");
-    dispatch(login(values));
+    // dispatch(login(values));
+    try {
+      await dispatch(authOperations.login({ email, password }));
+      alert(`${values.email}, Welcome back! Login Successful! 🎉`);
+    } catch (error) {
+      console.log("Login error:", error.message);
+      alert("Sign In failed. Please try again.");
+    }
   };
 
   return (

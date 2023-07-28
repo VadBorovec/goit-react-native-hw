@@ -1,7 +1,6 @@
 import persistReducer from "redux-persist/es/persistReducer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { configureStore } from "@reduxjs/toolkit";
-
 import {
   persistStore,
   FLUSH,
@@ -11,16 +10,9 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-// import { authSlice } from "./auth/authSlice";
 // from video
-import { authSlice } from "./auth/authReducer";
-// import { postsSlice } from "./posts/postsSlice";
-// import { commentsSlice } from "./comments/commentsSlice";
-
-// from video
-const rootReducer = combineReducers({
-  [authSlice.name]: authSlice.reducer,
-});
+// import { authSlice } from "./auth/authReducer";
+import { authSlice } from "./auth/authSlice";
 
 const authPersistConfig = {
   key: "auth",
@@ -29,10 +21,7 @@ const authPersistConfig = {
 
 export const store = configureStore({
   reducer: {
-    // auth: persistReducer(authPersistConfig, authSlice.reducer),
-    auth: persistReducer(authPersistConfig, rootReducer),
-    // posts: postsSlice.reducer,
-    // comments: commentsSlice.reducer,
+    auth: persistReducer(authPersistConfig, authSlice.reducer),
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

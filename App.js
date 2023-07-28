@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // Navigation
 import { NavigationContainer } from "@react-navigation/native";
 import { useRoute } from "./router";
@@ -11,13 +11,21 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/store";
 // firebase
-import db from "./firebase/config";
+import { auth } from "./firebase/config";
 
 export default function App() {
   const { fontsLoaded } = useCustomFonts();
   const [user, setUser] = useState(null);
 
-  db.auth().onAuthStateChanged((user) => setUser(user));
+  // useEffect(() => {
+  //   // Use useEffect to set up the auth state listener
+  //   const unsubscribe = auth.onAuthStateChanged((user) => setUser(user));
+
+  //   // Clean up the listener when the component unmounts
+  //   return () => unsubscribe();
+  // }, []);
+
+  auth.onAuthStateChanged((user) => setUser(user));
 
   const routing = useRoute(user);
 

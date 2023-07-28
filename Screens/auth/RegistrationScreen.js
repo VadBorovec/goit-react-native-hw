@@ -19,8 +19,9 @@ import AvatarPlaceholder from "../../assets/images/avatar-large.jpg";
 import { Formik } from "formik";
 import * as Yup from "yup";
 // for submit
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { authOperations } from "../../redux/auth/authOperations";
+// import { selectIsLoading, selectError } from "../../redux/auth/authSelectors";
 
 export default function RegistrationScreen({ navigation }) {
   const [isAvatarAdded, setIsAvatarAdded] = useState(false);
@@ -31,6 +32,8 @@ export default function RegistrationScreen({ navigation }) {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
   const dispatch = useDispatch();
+  // const isLoading = useSelector(selectIsLoading);
+  // const error = useSelector(selectError);
 
   const initialValues = {
     login: "",
@@ -57,16 +60,34 @@ export default function RegistrationScreen({ navigation }) {
       ),
   });
 
-  const handleSubmit = (values, { resetForm }) => {
+  // const handleSubmit = async (values, { resetForm }) => {
+  //   console.log(values);
+  //   resetForm();
+  //   setIsPasswordHidden(true);
+  //   alert(`🎉 Congratulations ${login}! Registration Successful! 🚀`);
+  //   // dispatch(register(values));
+  //   dispatch(
+  //     register({
+  //       email: values.email,
+  //       password: values.password,
+  //       login: values.login,
+  //     })
+  //   );
+  // };
+
+  const handleSubmit = async (values, { resetForm }) => {
     console.log(values);
-    alert(`🎉 Congratulations ${values.login}! Registration Successful! 🚀`);
     resetForm();
     setIsPasswordHidden(true);
-    // dispatch(authOperations.register(values));
-    // navigation.navigate("Home", {
-    //   screen: "Posts",
-    // });
-    dispatch(register(values));
+    const { login, email, password } = values;
+
+    try {
+      await dispatch(authOperations.register({ login, email, password }));
+      alert(`🎉 Congratulations ${login}! Registration Successful! 🚀`);
+    } catch (error) {
+      console.log("Registration error:", error.message);
+      alert("Registration failed. Please try again.");
+    }
   };
 
   return (
