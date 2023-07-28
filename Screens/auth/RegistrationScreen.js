@@ -18,19 +18,21 @@ import Background from "../../assets/images/background.jpg";
 import AvatarPlaceholder from "../../assets/images/avatar-large.jpg";
 import { Formik } from "formik";
 import * as Yup from "yup";
-
-import { useDispatch } from "react-redux";
-import { authOperations } from "../../redux/auth/authOperations";
+// for submit
+import { useDispatch, useSelector } from "react-redux";
+import { register } from "../../redux/auth/authOperations";
+// import { selectIsLoading, selectError } from "../../redux/auth/authSelectors";
 
 export default function RegistrationScreen({ navigation }) {
   const [isAvatarAdded, setIsAvatarAdded] = useState(false);
-
   const [isLoginFocused, setIsLoginFocused] = useState(false);
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
   const dispatch = useDispatch();
+  // const isLoading = useSelector(selectIsLoading);
+  // const error = useSelector(selectError);
 
   const initialValues = {
     login: "",
@@ -57,15 +59,13 @@ export default function RegistrationScreen({ navigation }) {
       ),
   });
 
-  const handleSubmit = (values, { resetForm }) => {
+  const handleSubmit = async (values, { resetForm }) => {
     console.log(values);
-    alert(`🎉 Congratulations ${values.login}! Registration Successful! 🚀`);
     resetForm();
     setIsPasswordHidden(true);
-    dispatch(authOperations.register(values));
-    navigation.navigate("Home", {
-      screen: "Posts",
-    });
+    const { login, email, password } = values;
+
+    await dispatch(register({ login, email, password }));
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // Navigation
 import { NavigationContainer } from "@react-navigation/native";
 import { useRoute } from "./router";
@@ -10,16 +10,24 @@ import { StatusBar } from "expo-status-bar";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/store";
+// firebase
+import { auth } from "./firebase/config";
 
 export default function App() {
   const { fontsLoaded } = useCustomFonts();
-  // const [isAuth, setIsAuth] = useState(false);
+  const [user, setUser] = useState(null);
 
-  const handleAuthSuccess = () => {
-    setIsAuth(true);
-  };
+  // useEffect(() => {
+  //   // Use useEffect to set up the auth state listener
+  //   const unsubscribe = auth.onAuthStateChanged((user) => setUser(user));
 
-  const routing = useRoute(false);
+  //   // Clean up the listener when the component unmounts
+  //   return () => unsubscribe();
+  // }, []);
+
+  auth.onAuthStateChanged((user) => setUser(user));
+
+  const routing = useRoute(user);
 
   if (!fontsLoaded) {
     return null;

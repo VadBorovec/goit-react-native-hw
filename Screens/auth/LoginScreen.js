@@ -17,9 +17,9 @@ import { Feather } from "@expo/vector-icons";
 import Background from "../../assets/images/background.jpg";
 import { Formik } from "formik";
 import * as Yup from "yup";
-
+// for submit
 import { useDispatch } from "react-redux";
-import { authOperations } from "../../redux/auth/authOperations";
+import { login } from "../../redux/auth/authOperations";
 
 export default function LoginScreen({ navigation, handleAuthSuccess }) {
   const [isEmailFocused, setIsEmailFocused] = useState(false);
@@ -47,15 +47,13 @@ export default function LoginScreen({ navigation, handleAuthSuccess }) {
       ),
   });
 
-  const handleSubmit = (values, { resetForm }) => {
+  const handleSubmit = async (values, { resetForm }) => {
     console.log(values);
-    alert(`${values.email}, Welcome back! Login Successful! 🎉`);
     resetForm();
     setIsPasswordHidden(true);
+    const { email, password } = values;
 
-    dispatch(authOperations.login(values));
-    // navigation.navigate("Home");
-    handleAuthSuccess();
+    await dispatch(login({ email, password }));
   };
 
   return (

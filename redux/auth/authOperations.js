@@ -9,7 +9,7 @@ import {
 import { Alert } from "react-native";
 import { auth } from "../../firebase/config";
 
-const register = createAsyncThunk(
+export const register = createAsyncThunk(
   "auth/register",
   async ({ email, password, login }) => {
     try {
@@ -24,8 +24,9 @@ const register = createAsyncThunk(
         userId: user.uid,
         displayName: login,
         email: user.email,
-        // Add other user-related data if needed
+        // other user-related data if needed
       };
+      Alert.alert(`🎉 Congratulations ${login}! Registration Successful! 🚀`);
 
       await updateProfile(auth.currentUser, {
         displayName: login,
@@ -33,35 +34,46 @@ const register = createAsyncThunk(
 
       return userPayload;
     } catch (error) {
-      console.log(error);
-      Alert.alert(error.message);
+      console.log("Sign up error:", error.message);
+      alert(`Registration failed.
+       ${error.message}
+       Please try again.`);
       return;
     }
   }
 );
-const login = createAsyncThunk("auth/login", async ({ email, password }) => {
-  try {
-    const { user } = await signInWithEmailAndPassword(auth, email, password);
-    console.log("user", user);
+export const login = createAsyncThunk(
+  "auth/login",
+  async ({ email, password }) => {
+    try {
+      const { user } = await signInWithEmailAndPassword(auth, email, password);
+      console.log("user", user);
 
-    const userPayload = {
-      userId: user.uid,
-      displayName: user.displayName,
-      email: user.email,
-      // Add other user-related data if needed
-    };
+      const userPayload = {
+        userId: user.uid,
+        displayName: user.displayName,
+        email: user.email,
+        // other user-related data if needed
+      };
+      Alert.alert(`${user.displayName}, Welcome back! Login Successful! 🎉`);
 
-    return userPayload;
-  } catch (error) {
-    console.log(error);
-    Alert.alert(error.message);
-    return;
+      return userPayload;
+    } catch (error) {
+      console.log("Sign in error:", error);
+      Alert.alert(`Sign In failed.
+      ${error.message}
+      Please try again.`);
+      return;
+    }
   }
-});
-const logout = createAsyncThunk("auth/logout", async () => {
+);
+
+export const logout = createAsyncThunk("auth/logout", async () => {
   try {
     await signOut(auth);
-    Alert.alert("You have been logged out");
+    Alert.alert(
+      "Logged out and gone like a cyber ninja! See you next time! 😄👋"
+    );
     return;
   } catch (error) {
     console.log(error);
@@ -70,8 +82,46 @@ const logout = createAsyncThunk("auth/logout", async () => {
   }
 });
 
-export const authOperations = {
-  register,
-  login,
-  logout,
-};
+// !============
+
+// import {
+//   createUserWithEmailAndPassword,
+//   signInWithEmailAndPassword,
+//   onAuthStateChanged,
+//   updateProfile,
+//   signOut,
+// } from "firebase/auth";
+// import { auth } from "../../firebase/config";
+// import { authSlice } from "./authReducer";
+
+// export const register =
+//   ({ email, password, login }) =>
+//   async (dispatch, getState) => {
+//     try {
+//       const { user } = await auth.createUserWithEmailAndPassword(
+//         email,
+//         password
+//       );
+//       dispatch(authSlice.actions.updateUserProfile({ userId: user.uid }));
+//       console.log("user", user);
+//     } catch (error) {
+//       console.log("error", error);
+
+//       console.log("error.message", error.message);
+//     }
+//   };
+
+// export const login =
+//   ({ email, password }) =>
+//   async (dispatch, getState) => {
+//     try {
+//       const user = await auth.signInWithEmailAndPassword(email, password);
+//       console.log("user", user);
+//     } catch (error) {
+//       console.log("error", error);
+//       console.log("error.code", error.code);
+//       console.log("error.message", error.message);
+//     }
+//   };
+
+// export const authSignOutUser = () => async (dispatch, getState) => {};
