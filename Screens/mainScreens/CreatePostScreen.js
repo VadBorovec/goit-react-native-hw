@@ -93,7 +93,10 @@ export default function CreatePostScreen({ navigation }) {
       `);
     alert("✅ Post published successfully! 🎉");
     navigation.navigate("Posts", {
-      params: { selectedImage, postTitle, location, geolocation },
+      selectedImage,
+      postTitle,
+      location,
+      geolocation,
     });
     setPhotoUri(null);
     setPostTitle("");
