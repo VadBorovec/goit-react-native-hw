@@ -53,8 +53,6 @@ export default function LoginScreen({ navigation, handleAuthSuccess }) {
     setIsPasswordHidden(true);
     const { email, password } = values;
 
-    // navigation.navigate("Home");
-    // dispatch(login(values));
     try {
       await dispatch(authOperations.login({ email, password }));
       alert(`${values.email}, Welcome back! Login Successful! 🎉`);

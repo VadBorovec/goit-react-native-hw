@@ -25,7 +25,6 @@ import { authOperations } from "../../redux/auth/authOperations";
 
 export default function RegistrationScreen({ navigation }) {
   const [isAvatarAdded, setIsAvatarAdded] = useState(false);
-
   const [isLoginFocused, setIsLoginFocused] = useState(false);
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
@@ -59,21 +58,6 @@ export default function RegistrationScreen({ navigation }) {
         "Password must contain at least one uppercase letter, one lowercase letter, and one number"
       ),
   });
-
-  // const handleSubmit = async (values, { resetForm }) => {
-  //   console.log(values);
-  //   resetForm();
-  //   setIsPasswordHidden(true);
-  //   alert(`🎉 Congratulations ${login}! Registration Successful! 🚀`);
-  //   // dispatch(register(values));
-  //   dispatch(
-  //     register({
-  //       email: values.email,
-  //       password: values.password,
-  //       login: values.login,
-  //     })
-  //   );
-  // };
 
   const handleSubmit = async (values, { resetForm }) => {
     console.log(values);
