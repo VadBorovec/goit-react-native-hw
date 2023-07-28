@@ -70,7 +70,7 @@ export default function LoginScreen({ navigation, handleAuthSuccess }) {
               <View style={styles.formikWrap}>
                 <Formik
                   initialValues={initialValues}
-                  // validationSchema={validationSchema}
+                  validationSchema={validationSchema}
                   onSubmit={handleSubmit}
                 >
                   {({
