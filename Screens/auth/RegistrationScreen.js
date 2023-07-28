@@ -20,7 +20,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 // for submit
 import { useDispatch, useSelector } from "react-redux";
-import { authOperations } from "../../redux/auth/authOperations";
+import { register } from "../../redux/auth/authOperations";
 // import { selectIsLoading, selectError } from "../../redux/auth/authSelectors";
 
 export default function RegistrationScreen({ navigation }) {
@@ -66,7 +66,7 @@ export default function RegistrationScreen({ navigation }) {
     const { login, email, password } = values;
 
     try {
-      await dispatch(authOperations.register({ login, email, password }));
+      await dispatch(register({ login, email, password }));
       alert(`🎉 Congratulations ${login}! Registration Successful! 🚀`);
     } catch (error) {
       console.log("Registration error:", error.message);

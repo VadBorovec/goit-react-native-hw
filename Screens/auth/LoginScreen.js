@@ -19,7 +19,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 // for submit
 import { useDispatch } from "react-redux";
-import { authOperations } from "../../redux/auth/authOperations";
+import { login } from "../../redux/auth/authOperations";
 
 export default function LoginScreen({ navigation, handleAuthSuccess }) {
   const [isEmailFocused, setIsEmailFocused] = useState(false);
@@ -54,7 +54,7 @@ export default function LoginScreen({ navigation, handleAuthSuccess }) {
     const { email, password } = values;
 
     try {
-      await dispatch(authOperations.login({ email, password }));
+      await dispatch(login({ email, password }));
       alert(`${values.email}, Welcome back! Login Successful! 🎉`);
     } catch (error) {
       console.log("Login error:", error.message);

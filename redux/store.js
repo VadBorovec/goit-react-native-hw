@@ -10,8 +10,6 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-// from video
-// import { authSlice } from "./auth/authReducer";
 import { authSlice } from "./auth/authSlice";
 
 const authPersistConfig = {
