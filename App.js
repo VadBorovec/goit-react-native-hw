@@ -17,14 +17,6 @@ export default function App() {
   const { fontsLoaded } = useCustomFonts();
   const [user, setUser] = useState(null);
 
-  // useEffect(() => {
-  //   // Use useEffect to set up the auth state listener
-  //   const unsubscribe = auth.onAuthStateChanged((user) => setUser(user));
-
-  //   // Clean up the listener when the component unmounts
-  //   return () => unsubscribe();
-  // }, []);
-
   auth.onAuthStateChanged((user) => setUser(user));
 
   const routing = useRoute(user);
