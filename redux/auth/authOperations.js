@@ -26,6 +26,7 @@ export const register = createAsyncThunk(
         email: user.email,
         // other user-related data if needed
       };
+      Alert.alert(`🎉 Congratulations ${login}! Registration Successful! 🚀`);
 
       await updateProfile(auth.currentUser, {
         displayName: login,
@@ -33,8 +34,10 @@ export const register = createAsyncThunk(
 
       return userPayload;
     } catch (error) {
-      console.log(error);
-      Alert.alert(error.message);
+      console.log("Sign up error:", error.message);
+      alert(`Registration failed.
+       ${error.message}
+       Please try again.`);
       return;
     }
   }
@@ -52,11 +55,14 @@ export const login = createAsyncThunk(
         email: user.email,
         // other user-related data if needed
       };
+      Alert.alert(`${user.displayName}, Welcome back! Login Successful! 🎉`);
 
       return userPayload;
     } catch (error) {
-      console.log(error);
-      Alert.alert(error.message);
+      console.log("Sign in error:", error);
+      Alert.alert(`Sign In failed.
+      ${error.message}
+      Please try again.`);
       return;
     }
   }

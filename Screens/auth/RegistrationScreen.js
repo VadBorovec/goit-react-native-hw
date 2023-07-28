@@ -65,13 +65,7 @@ export default function RegistrationScreen({ navigation }) {
     setIsPasswordHidden(true);
     const { login, email, password } = values;
 
-    try {
-      await dispatch(register({ login, email, password }));
-      alert(`🎉 Congratulations ${login}! Registration Successful! 🚀`);
-    } catch (error) {
-      console.log("Registration error:", error.message);
-      alert("Registration failed. Please try again.");
-    }
+    await dispatch(register({ login, email, password }));
   };
 
   return (

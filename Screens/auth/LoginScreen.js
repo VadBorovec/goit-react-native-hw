@@ -53,13 +53,7 @@ export default function LoginScreen({ navigation, handleAuthSuccess }) {
     setIsPasswordHidden(true);
     const { email, password } = values;
 
-    try {
-      await dispatch(login({ email, password }));
-      alert(`${values.email}, Welcome back! Login Successful! 🎉`);
-    } catch (error) {
-      console.log("Login error:", error.message);
-      alert("Sign In failed. Please try again.");
-    }
+    await dispatch(login({ email, password }));
   };
 
   return (
