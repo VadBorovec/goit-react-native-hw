@@ -96,7 +96,7 @@ export const useRoute = (isAuth, navigation) => {
             </TouchableOpacity>
           ),
         }}
-        name="Posts"
+        name="Home"
         component={Home}
       />
       <MainTab.Screen
