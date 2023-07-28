@@ -40,5 +40,19 @@ export const authSlice = createSlice({
       state.loading = false;
       state.error = action.error.message;
     });
+
+    // Reducer for logoutUser
+    builder.addCase(logout.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(logout.fulfilled, (state) => {
+      state.loading = false;
+      state.userId = null; // Reset userId to null on successful logout
+    });
+    builder.addCase(logout.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    });
   },
 });

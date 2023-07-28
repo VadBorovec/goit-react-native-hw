@@ -14,11 +14,16 @@ import {
   StyleSheet,
   Platform,
 } from "react-native";
-// import { useNavigation } from "@react-navigation/native";
+// icons
 import { Feather, FontAwesome } from "@expo/vector-icons";
+// for logout
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../redux/auth/authOperations";
+// import { selectIsLoading, selectError } from "../../redux/auth/authSelectors";
+// images
 import Background from "../../assets/images/background.jpg";
 import AvatarPlaceholder from "../../assets/images/avatar-large.jpg";
-
+// temporary db
 import { posts, users, comments } from "../../server/db";
 
 export default function ProfileScreen({ navigation }) {
@@ -26,7 +31,9 @@ export default function ProfileScreen({ navigation }) {
   const [isAvatarAdded, setIsAvatarAdded] = useState(false);
   const [likedPosts, setLikedPosts] = useState([]);
 
-  // const navigation = useNavigation();
+  const dispatch = useDispatch();
+  // const isLoading = useSelector(selectIsLoading);
+  // const error = useSelector(selectError);
 
   const userPosts = posts.filter((post) => post.userId === user.userId);
 
@@ -65,6 +72,16 @@ export default function ProfileScreen({ navigation }) {
                 )}
               </TouchableOpacity>
             </View>
+          </View>
+          <View style={styles.logoutContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                console.log("Press LogOut Button");
+                dispatch(logout());
+              }}
+            >
+              <Feather name="log-out" color={"#BDBDBD"} size={24} />
+            </TouchableOpacity>
           </View>
           <Text style={styles.header}>{user.login}</Text>
           <View style={styles.postsWrap}>
@@ -162,6 +179,11 @@ const styles = StyleSheet.create({
     top: -60,
     width: "100%",
     alignItems: "center",
+  },
+  logoutContainer: {
+    position: "absolute",
+    top: 25,
+    right: 25,
   },
   avatarWrapper: {
     width: 120,

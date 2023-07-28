@@ -65,7 +65,9 @@ export const login = createAsyncThunk(
 export const logout = createAsyncThunk("auth/logout", async () => {
   try {
     await signOut(auth);
-    Alert.alert("You have been logged out");
+    Alert.alert(
+      "Logged out and gone like a cyber ninja! See you next time! 😄👋"
+    );
     return;
   } catch (error) {
     console.log(error);

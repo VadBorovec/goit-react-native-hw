@@ -5,7 +5,12 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import "react-native-gesture-handler";
 // components
 import { Feather } from "react-native-vector-icons";
-import { TouchableOpacity } from "react-native";
+import { Alert, TouchableOpacity } from "react-native";
+//! for logout !useDispatch throws an error if used from this file
+// import { useDispatch, useSelector } from "react-redux";
+// import { logout } from "./redux/auth/authOperations";
+// import { selectIsLoading, selectError } from "./redux/auth/authSelectors";
+
 // Auth Screens
 import RegistrationScreen from "./Screens/auth/RegistrationScreen";
 import LoginScreen from "./Screens/auth/LoginScreen";
@@ -17,7 +22,12 @@ import ProfileScreen from "./Screens/mainScreens/ProfileScreen";
 const AuthStack = createStackNavigator();
 const MainTab = createBottomTabNavigator();
 
-export const useRoute = (isAuth, handleAuthSuccess, navigation) => {
+export const useRoute = (isAuth, navigation) => {
+  // !useDispatch throws an error if used from this file
+  // const dispatch = useDispatch();
+  // const isLoading = useSelector(selectIsLoading);
+  // const error = useSelector(selectError);
+
   if (!isAuth) {
     // Not authenticated user can only see login and registration screens
     console.log("Not Authenticated");
@@ -77,8 +87,9 @@ export const useRoute = (isAuth, handleAuthSuccess, navigation) => {
             <TouchableOpacity
               onPress={() => {
                 console.log("Press LogOut Button");
-                //   dispatch(logout()); // not implemented yet
-                navigation.navigate("Login");
+                Alert.alert("LogOut works from Profile Screen");
+                // !useDispatch throws an error if used from this file
+                // dispatch(logout());
               }}
             >
               <Feather name="log-out" color={"#BDBDBD"} size={24} />
