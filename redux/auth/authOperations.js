@@ -8,6 +8,7 @@ import {
 } from "firebase/auth";
 import { Alert } from "react-native";
 import { auth } from "../../firebase/config";
+import { authSlice } from "./authSlice";
 
 export const register = createAsyncThunk(
   "auth/register",
@@ -82,9 +83,9 @@ export const logout = createAsyncThunk("auth/logout", async () => {
   }
 });
 
-export const authStateCahngeUser = () => async (dispatch, getState) => {
-  await auth.onAuthStateChanged((user) => setUser(user));
-};
+// export const authStateCahngeUser = () => async (dispatch, getState) => {
+//   await auth.onAuthStateChanged((user) => setUser(user));
+// };
 
 export const authStateCahngeUser = () => async (dispatch, getState) => {
   await auth.onAuthStateChanged((user) => {
