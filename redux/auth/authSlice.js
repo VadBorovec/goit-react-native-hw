@@ -8,9 +8,18 @@ export const authSlice = createSlice({
     login: null,
     loading: false,
     error: null,
+    stateChange: false,
   },
   reducers: {
-    // Here will be reducers if needed
+    updateUserProfile: (state, { payload }) => ({
+      ...state,
+      userId: payload.userId,
+      login: payload.login,
+    }),
+    authStateChange: (state, { payload }) => ({
+      ...state,
+      stateChange: payload.stateChange,
+    }),
   },
   extraReducers: (builder) => {
     // Reducer for registerUser
