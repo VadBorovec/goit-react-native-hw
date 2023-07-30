@@ -83,10 +83,6 @@ export const logout = createAsyncThunk("auth/logout", async () => {
   }
 });
 
-// export const authStateCahngeUser = () => async (dispatch, getState) => {
-//   await auth.onAuthStateChanged((user) => setUser(user));
-// };
-
 export const authStateCahngeUser = () => async (dispatch, getState) => {
   await auth.onAuthStateChanged((user) => {
     if (user) {
