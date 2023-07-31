@@ -53,6 +53,11 @@ export default function ProfileScreen({ navigation }) {
     navigation.navigate("Comments", { post });
   };
 
+  const handleLogOutPress = () => {
+    console.log("Press LogOut Button");
+    dispatch(logout());
+  };
+
   return (
     <View style={styles.container}>
       <ImageBackground style={styles.background} source={Background}>
@@ -74,12 +79,7 @@ export default function ProfileScreen({ navigation }) {
             </View>
           </View>
           <View style={styles.logoutContainer}>
-            <TouchableOpacity
-              onPress={() => {
-                console.log("Press LogOut Button");
-                dispatch(logout());
-              }}
-            >
+            <TouchableOpacity onPress={handleLogOutPress}>
               <Feather name="log-out" color={"#BDBDBD"} size={24} />
             </TouchableOpacity>
           </View>

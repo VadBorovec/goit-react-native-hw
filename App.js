@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/store";
 // firebase
-import Main from "./components/main";
+import Main from "./components/Main";
 
 export default function App() {
   const { fontsLoaded } = useCustomFonts();
