@@ -7,6 +7,8 @@ import { getFirestore } from "firebase/firestore";
 // Функція для підключення сховища файлів в проект
 import { getStorage } from "firebase/storage";
 
+import { getAnalytics } from "firebase/analytics";
+
 const firebaseConfig = {
   apiKey: "AIzaSyBC15CY8KeE6hwLjG5sWIa39IssQYkkGlo",
   authDomain: "socnetapp-ae36c.firebaseapp.com",
@@ -19,6 +21,18 @@ const firebaseConfig = {
   measurementId: "G-HEZ2SWWRLQ",
 };
 
+// const firebaseConfig = {
+//   apiKey: "AIzaSyCjZNnYPumdZPW24kwgjC1bGooMkLaDpug",
+//   authDomain: "rn-social-723d0.firebaseapp.com",
+//     databaseURL:
+//     "https://rn-social-723d0-default-rtdb.firebaseio.com",
+//   projectId: "rn-social-723d0",
+//   storageBucket: "rn-social-723d0.appspot.com",
+//   messagingSenderId: "1015239931470",
+//   appId: "1:1015239931470:web:27d4f5b9d35e1bd2c3351f",
+//   measurementId: "G-C6TTCY1F5Q"
+// };
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
@@ -26,9 +40,4 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
-
-// const auth = getAuth(app);
-// const db = getFirestore(app);
-// const storage = getStorage(app);
-
-// export { auth, db, storage };
+export const analytics = getAnalytics(app);
