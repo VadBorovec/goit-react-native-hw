@@ -18,8 +18,6 @@ import {
   FontAwesome,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-// Navigation
-// import { useNavigation } from "@react-navigation/native";
 // Camera
 import { Camera } from "expo-camera";
 import useCamera from "../../hooks/getCamera";
@@ -27,6 +25,8 @@ import useCamera from "../../hooks/getCamera";
 import useUploadPhoto from "../../hooks/getUploadPhoto";
 // Location
 import useGetCurrentLocation from "../../hooks/getLocation";
+// firbase
+import { storage } from "../../firebase/config";
 
 export default function CreatePostScreen({ navigation }) {
   const [postTitle, setPostTitle] = useState("");
@@ -35,7 +35,6 @@ export default function CreatePostScreen({ navigation }) {
   const [isGeolocationFocused, setIsGeolocationFocused] = useState(false);
   const [isPhotoTaken, setIsPhotoTaken] = useState(false);
 
-  // const navigation = useNavigation();
   const location = useGetCurrentLocation();
   const {
     hasPermission,
@@ -72,6 +71,26 @@ export default function CreatePostScreen({ navigation }) {
     }
   };
 
+  const uploadPhotoToServer = async () => {
+    try {
+      const response = await fetch(photoUri);
+      const file = await response.blob();
+
+      const uniquePostId = Date.now().toString();
+
+      await storage.ref(`postImage/${uniquePostId}`).put(file);
+
+      const processedPhoto = await storage
+        .ref("postImage")
+        .child(uniquePostId)
+        .getDownloadURL();
+
+      console.log("processedPhoto", processedPhoto);
+    } catch (error) {
+      console.log("uploadPhotoToServer Error:", error);
+    }
+  };
+
   const handleSubmit = () => {
     if (!isPhotoTaken && !selectedImage) {
       alert("Previously make a shot");
@@ -91,6 +110,7 @@ export default function CreatePostScreen({ navigation }) {
       geolocationTitle - ${geolocation}:
       isPhotoTaken - ${isPhotoTaken};
       `);
+    uploadPhotoToServer();
     alert("✅ Post published successfully! 🎉");
     navigation.navigate("Posts", {
       selectedImage,
